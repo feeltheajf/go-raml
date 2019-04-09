@@ -74,10 +74,14 @@ func (pcm *clientMethod) queryParams() (params []string) {
 
 	for name, qp := range pcm.QueryParameters {
 		if qp.Default == nil {
-			paramsNoDefault = append(paramsNoDefault, name)
-		} else {
-			paramsWithDefault = append(paramsWithDefault, fmt.Sprintf("%s=%v", name, qp.Default))
+			if qp.Required == false {
+				qp.Default = "None"
+			} else {
+				paramsNoDefault = append(paramsNoDefault, name)
+				continue
+			}
 		}
+		paramsWithDefault = append(paramsWithDefault, fmt.Sprintf("%s=%v", name, qp.Default))
 	}
 
 	if len(paramsNoDefault) > 0 {
