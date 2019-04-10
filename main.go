@@ -329,13 +329,6 @@ func main() {
 					log.Error(err)
 				}
 			},
-		}, {
-			Name:  "spec",
-			Usage: "Generate a RAML specification from a go server",
-			Action: func(c *cli.Context) {
-				err := errors.New("Not implemented, check the roadmap")
-				log.Error(err)
-			},
 		},
 	}
 
