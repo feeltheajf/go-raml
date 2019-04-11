@@ -236,6 +236,7 @@ func (pc *class) addImport(mod, name string) {
 	importString := "from " + mod + " import " + name
 	pc.imports[importString] = struct{}{}
 }
+
 func (pc class) CapnpName() string {
 	return casee.ToPascalCase(pc.Name())
 }

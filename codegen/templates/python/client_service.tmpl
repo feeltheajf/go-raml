@@ -4,13 +4,31 @@
 {{- range $k, $v := .Imports}}
 {{ $v }}
 {{- end}}
+
+{{ range $k, $v := .Methods }}
+{{- if $v.HasData }}{{ range $, $t := $v.BasicTypes }}from .{{$t}} import {{$t}}
+{{end -}}{{end}}{{ end -}}
+
 {{ $UnmarshallResponse := .UnmarshallResponse}}
 
 class {{.Name}}:
+
+    _methods = (
+        {{ range $k, $v := .Methods }}"{{$v.MethodName}}",{{end}}
+    )
+
     def __init__(self, client):
         self.client = client
 
 {{ range $k, $v := .Methods }}
+
+    {{- if $v.HasData }}
+    @staticmethod
+    def _{{$v.MethodName}}_data_types():
+        """It is data schema for {{$v.Verb}} {{$v.Endpoint}}"""
+        return ({{ range $, $t := $v.BasicTypes }}{{$t}},{{end -}})
+    {{- end}}
+
     def {{$v.MethodName}}({{$v.Params}}):
         """{{ range $kf, $vf := $v.FuncComments }}
         {{$vf}}{{end}}
@@ -19,7 +37,7 @@ class {{.Name}}:
         if query_params is None:
             query_params = {}
         {{ range $k, $v := $v.QueryParameters}}
-        query_params['{{$k}}'] = {{$k}}{{ end }}
+        query_params["{{$k}}"] = {{$k}}{{ end }}
 
         uri = self.client.base_url {{$v.Route}}
         {{- if (and $v.HasRespBody $UnmarshallResponse ) }}
@@ -37,7 +55,7 @@ class {{.Name}}:
             {{- end}}
 		{{- end }}
 
-            message = 'unknown status code={}'.format(resp.status_code)
+            message = "unknown status code={}".format(resp.status_code)
             raise UnhandledAPIError(response=resp, code=resp.status_code,
                                     message=message)
         except ValueError as msg:

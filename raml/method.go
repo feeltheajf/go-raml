@@ -64,9 +64,14 @@ func newMethod(name string) *Method {
 	}
 }
 
+// HasData returns true if method should send data with request
+func (m *Method) HasData() bool {
+	return !m.Bodies.IsEmpty() || m.Name == "PUT" || m.Name == "POST" || m.Name == "PATCH"
+}
+
 // doing post processing that can't be done by YAML parser
 func (m *Method) postProcess(r *Resource, name string, traitsMap map[string]Trait, apiDef *APIDefinition) {
-	m.Name = name
+	m.Name = strings.ToUpper(name)
 	m.inheritFromTraits(r, append(r.Is, m.Is...), traitsMap, apiDef)
 	r.Methods = append(r.Methods, m)
 

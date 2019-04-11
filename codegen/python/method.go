@@ -29,8 +29,51 @@ func (m method) ReqBody() string {
 	return commons.NormalizeIdentifierWithLib(m.reqBody, globAPIDef)
 }
 
+// FIXME!!!
+func (m method) BasicTypes() []string {
+	var types []string
+
+	t := m.Bodies.ApplicationJSON.TypeString()
+	if t != "" && t != "object" {
+		for _, v := range strings.Split(t, " | ") {
+			types = append(types, commons.NormalizeIdentifierWithLib(v, globAPIDef))
+		}
+	} else {
+		camel := ToCamelCase(m.MethodName + "ReqBody")
+		types = append(types, strings.Replace(camel, "ID", "Id", -1))
+	}
+	return types
+}
+
+func (m method) BasicTypesString() string {
+	return strings.Join(m.BasicTypes(), ", ")
+}
+
 func (m method) escapedEndpoint() string {
 	return reEndpoint.ReplaceAllString(m.Endpoint, "_")
+}
+
+func ToCamelCase(str string) string {
+	var camel string
+	isToUpper := false
+
+	for k, v := range str {
+		if k == 0 {
+			camel = strings.ToUpper(string(str[0]))
+		} else {
+			if isToUpper {
+				camel += strings.ToUpper(string(v))
+				isToUpper = false
+			} else {
+				if v == '_' {
+					isToUpper = true
+				} else {
+					camel += string(v)
+				}
+			}
+		}
+	}
+	return camel
 }
 
 type respBody struct {
