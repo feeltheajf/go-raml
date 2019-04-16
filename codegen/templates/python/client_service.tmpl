@@ -26,7 +26,7 @@ class {{.Name}}:
     @property
     def _{{$v.MethodName}}_data_types(self):
         """It is data schema for {{$v.Verb}} {{$v.Endpoint}}"""
-        return ({{ range $, $t := $v.BasicTypes }}{{$t}},{{end -}})
+        return ({{$v.BasicTypesString}},)
     {{- end}}
 
     def {{$v.MethodName}}({{$v.Params}}):
