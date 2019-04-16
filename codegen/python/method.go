@@ -49,10 +49,7 @@ func (m method) BasicTypesString() string {
 	return strings.Join(m.BasicTypes(), ", ")
 }
 
-func (m method) escapedEndpoint() string {
-	return reEndpoint.ReplaceAllString(m.Endpoint, "_")
-}
-
+// ToCamelCase converts snake case string to camel case
 func ToCamelCase(str string) string {
 	var camel string
 	isToUpper := false
@@ -74,6 +71,10 @@ func ToCamelCase(str string) string {
 		}
 	}
 	return camel
+}
+
+func (m method) escapedEndpoint() string {
+	return reEndpoint.ReplaceAllString(m.Endpoint, "_")
 }
 
 type respBody struct {

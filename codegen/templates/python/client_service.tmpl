@@ -23,8 +23,8 @@ class {{.Name}}:
 {{ range $k, $v := .Methods }}
 
     {{- if $v.HasData }}
-    @staticmethod
-    def _{{$v.MethodName}}_data_types():
+    @property
+    def _{{$v.MethodName}}_data_types(self):
         """It is data schema for {{$v.Verb}} {{$v.Endpoint}}"""
         return ({{ range $, $t := $v.BasicTypes }}{{$t}},{{end -}})
     {{- end}}
