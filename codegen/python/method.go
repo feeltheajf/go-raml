@@ -8,6 +8,7 @@ import (
 	"github.com/Jumpscale/go-raml/codegen/commons"
 	"github.com/Jumpscale/go-raml/codegen/resource"
 	"github.com/Jumpscale/go-raml/raml"
+	"github.com/pinzolo/casee"
 )
 
 var (
@@ -29,48 +30,22 @@ func (m method) ReqBody() string {
 	return commons.NormalizeIdentifierWithLib(m.reqBody, globAPIDef)
 }
 
-// FIXME!!!
 func (m method) BasicTypes() []string {
 	var types []string
 
 	t := m.Bodies.ApplicationJSON.TypeString()
 	if t != "" && t != "object" {
 		for _, v := range strings.Split(t, " | ") {
-			types = append(types, commons.NormalizeIdentifierWithLib(v, globAPIDef))
+			types = append(types, v)
 		}
 	} else {
-		camel := ToCamelCase(m.MethodName + "ReqBody")
-		types = append(types, strings.Replace(camel, "ID", "Id", -1))
+		types = append(types, casee.ToPascalCase(m.reqBody))
 	}
 	return types
 }
 
 func (m method) BasicTypesString() string {
 	return strings.Join(m.BasicTypes(), ", ")
-}
-
-// ToCamelCase converts snake case string to camel case
-func ToCamelCase(str string) string {
-	var camel string
-	isToUpper := false
-
-	for k, v := range str {
-		if k == 0 {
-			camel = strings.ToUpper(string(str[0]))
-		} else {
-			if isToUpper {
-				camel += strings.ToUpper(string(v))
-				isToUpper = false
-			} else {
-				if v == '_' {
-					isToUpper = true
-				} else {
-					camel += string(v)
-				}
-			}
-		}
-	}
-	return camel
 }
 
 func (m method) escapedEndpoint() string {
@@ -156,12 +131,7 @@ func _snakeCaseResourceURI(r *raml.Resource, completeURI string) string {
 			if r.Parent != nil { // not root resource, need to add "_"
 				snake = "_"
 			}
-
-			if strings.HasPrefix(r.URI, "/{") {
-				snake += "by" + strings.ToUpper(uri[:1])
-			} else {
-				snake += strings.ToLower(uri[:1])
-			}
+			snake += strings.ToLower(uri[:1])
 
 			if len(uri) > 1 { // append with the rest of uri
 				snake += uri[1:]
