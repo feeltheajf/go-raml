@@ -4,13 +4,13 @@
 support methods for python clients
 """
 
-import json
 import collections
+import json
 from datetime import datetime
-from uuid import UUID
 from enum import Enum
-from dateutil import parser
+from uuid import UUID
 
+from dateutil import parser
 
 # python2/3 compatible basestring, for use in to_dict
 try:
@@ -25,7 +25,7 @@ def timestamp_from_datetime(datetime):
         Input: Time in datetime format
         Output: Time in timestamp format
     """
-    return datetime.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+    return datetime.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
 
 def timestamp_to_datetime(timestamp):
@@ -47,7 +47,7 @@ def has_properties(cls, property, child_properties):
 
 def list_factory(val, member_type):
     if not isinstance(val, list):
-        raise ValueError('list_factory: value must be a list')
+        raise ValueError("list_factory: value must be a list")
     return [val_factory(v, member_type) for v in val]
 
 
@@ -58,7 +58,7 @@ def dict_factory(val, objmap):
     for attrname, attrdict in objmap.items():
         value = val.get(attrname)
         if value is not None:
-            for dt in attrdict['datatype']:
+            for dt in attrdict["datatype"]:
                 try:
                     if isinstance(dt, dict):
                         objdict[attrname] = dict_factory(value, attrdict)
@@ -68,10 +68,14 @@ def dict_factory(val, objmap):
                     pass
             if objdict.get(attrname) is None:
                 raise ValueError(
-                    'dict_factory: {attr}: unable to instantiate with any supplied type'.format(
-                        attr=attrname))
-        elif attrdict.get('required'):
-            raise ValueError('dict_factory: {attr} is required'.format(attr=attrname))
+                    "dict_factory: {attr}: unable to instantiate with any supplied type".format(
+                        attr=attrname
+                    )
+                )
+        elif attrdict.get("required"):
+            raise ValueError(
+                "dict_factory: {attr} is required".format(attr=attrname)
+            )
 
     return objdict
 
@@ -90,12 +94,23 @@ def val_factory(val, datatypes):
         except Exception as e:
             exceptions.append(str(e))
     # if we get here, we never found a valid value. raise an error
-    raise ValueError('val_factory: Unable to instantiate {val} from types {types}. Exceptions: {excs}'.
-                     format(val=val, types=datatypes, excs=exceptions))
+    raise ValueError(
+        "val_factory: Unable to instantiate {val} from types {types}. Exceptions: {excs}".format(
+            val=val, types=datatypes, excs=exceptions
+        )
+    )
 
 
-def set_property(name, data, data_types, has_child_properties,
-                 required_child_properties, is_list, required, class_name):
+def set_property(
+    name,
+    data,
+    data_types,
+    has_child_properties,
+    required_child_properties,
+    is_list,
+    required,
+    class_name,
+):
     """
     Set a class property
     :param name: property name to set
@@ -108,8 +123,8 @@ def set_property(name, data, data_types, has_child_properties,
     :param class_name: name of the class this property belongs to
     :return:
     """
-    create_error = '{cls}: unable to create {prop} from value: {val}: {err}'
-    required_error = '{cls}: missing required property {prop}'
+    create_error = "{cls}: unable to create {prop} from value: {val}: {err}"
+    required_error = "{cls}: missing required property {prop}"
     factory_value = None
     val = data.get(name)
     if val is not None:
@@ -121,13 +136,23 @@ def set_property(name, data, data_types, has_child_properties,
             else:
                 factory_value = val_factory(val, data_types)
         except ValueError as err:
-            raise ValueError(create_error.format(cls=class_name, prop=name, val=val, err=err))
+            raise ValueError(
+                create_error.format(
+                    cls=class_name, prop=name, val=val, err=err
+                )
+            )
         else:
             if required_child_properties:
                 for child in required_child_properties:
                     if not factory_value.get(child):
-                        child_prop_name = "{parent}.{child}".format(parent=name, child=child)
-                        raise ValueError(required_error.format(cls=class_name, prop=child_prop_name))
+                        child_prop_name = "{parent}.{child}".format(
+                            parent=name, child=child
+                        )
+                        raise ValueError(
+                            required_error.format(
+                                cls=class_name, prop=child_prop_name
+                            )
+                        )
     elif required:
         raise ValueError(required_error.format(cls=class_name, prop=name))
 
@@ -149,6 +174,7 @@ def to_dict(cls, convert_datetime=True):
     `convert_datetime` controls whether datetime objects are converted to strings or not
     :rtype: dict
     """
+
     def todict(obj):
         """
         recurse the objects and represent as a dict
@@ -163,11 +189,13 @@ def to_dict(cls, convert_datetime=True):
             return obj
         elif type_handler_value(obj):
             return type_handler_value(obj)
-        elif isinstance(obj, collections.Sequence) and not isinstance(obj, basestring):
+        elif isinstance(obj, collections.Sequence) and not isinstance(
+            obj, basestring
+        ):
             return [todict(v) for v in obj]
         elif hasattr(obj, "__dict__"):
             for key, value in obj.__dict__.items():
-                if not callable(value) and not key.startswith('_'):
+                if not callable(value) and not key.startswith("_"):
                     data[key] = todict(value)
             return data
         else:
@@ -180,6 +208,7 @@ class DatetimeHandler(object):
     """
     output datetime objects as iso-8601 compliant strings
     """
+
     @classmethod
     def flatten(cls, obj):
         """flatten"""
@@ -195,6 +224,7 @@ class UUIDHandler(object):
     """
     output UUID objects as a string
     """
+
     @classmethod
     def flatten(cls, obj):
         """flatten"""
@@ -210,6 +240,7 @@ class EnumHandler(object):
     """
     output Enum objects as their value
     """
+
     @classmethod
     def flatten(cls, obj):
         """flatten"""
@@ -223,11 +254,7 @@ class EnumHandler(object):
         raise NotImplementedError
 
 
-handlers = {
-    datetime: DatetimeHandler,
-    Enum: EnumHandler,
-    UUID: UUIDHandler,
-}
+handlers = {datetime: DatetimeHandler, Enum: EnumHandler, UUID: UUIDHandler}
 
 
 def handler_for(obj):

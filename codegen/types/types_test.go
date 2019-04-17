@@ -8,12 +8,12 @@ import (
 )
 
 func TestGenerateStructBodyFromRaml(t *testing.T) {
-	Convey("generate struct body from raml", t, func() {
+	Convey("generate struct body from raml", t, func(c C) {
 		apiDef := new(raml.APIDefinition)
 
-		Convey("simple raml", func() {
+		Convey("simple raml", t, func() {
 			err := raml.ParseFile("./fixtures/api.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			expected := []string{
 				"/users:POST:body:0",
@@ -26,9 +26,9 @@ func TestGenerateStructBodyFromRaml(t *testing.T) {
 			}
 			tts := AllTypes(apiDef, "main")
 
-			So(len(tts), ShouldEqual, len(expected))
+			c.So(len(tts), ShouldEqual, len(expected))
 			for name := range tts {
-				So(expected, ShouldContain, name)
+				c.So(expected, ShouldContain, name)
 				t.Logf("name=%v\n", name)
 			}
 		})

@@ -19,7 +19,7 @@ generate:
 	go generate
 
 test:
-	go test $(PACKAGES)
+	go test -v -coverprofile=coverage.xml -covermode=atomic $(PACKAGES)
 
 gogentest:
 	cd codegen/golang/gentest; bash test.sh

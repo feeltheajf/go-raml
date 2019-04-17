@@ -14,6 +14,10 @@ class User2_0(object):
     """
 
     @staticmethod
+    def _get_schema():
+        return {"name": {"type": string_types, "required": True}}
+
+    @staticmethod
     def create(**kwargs):
         """
         :type name: string_types
@@ -24,14 +28,16 @@ class User2_0(object):
 
     def __init__(self, json=None, **kwargs):
         if json is None and not kwargs:
-            raise ValueError('No data or kwargs present')
+            raise ValueError("No data or kwargs present")
 
-        class_name = 'User2_0'
+        class_name = "User2_0"
         data = json or kwargs
 
         # set attributes
         data_types = [string_types]
-        self.name = client_support.set_property('name', data, data_types, False, [], False, True, class_name)
+        self.name = client_support.set_property(
+            "name", data, data_types, False, [], False, True, class_name
+        )
 
     def __str__(self):
         return self.as_json(indent=4)

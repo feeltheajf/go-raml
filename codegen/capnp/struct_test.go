@@ -13,17 +13,17 @@ import (
 )
 
 func TestGenerateCapnpSchema(t *testing.T) {
-	Convey("generate capnp schema from raml", t, func() {
+	Convey("generate capnp schema from raml", t, func(c C) {
 		var apiDef raml.APIDefinition
 		err := raml.ParseFile("./fixtures/struct.raml", &apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("Schema for Python & Nim", func() {
+		Convey("Schema for Python & Nim", t, func(c C) {
 			err = GenerateCapnp(&apiDef, targetDir, "nim", "")
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/struct/vanilla"
 			checks := []struct {
@@ -38,19 +38,19 @@ func TestGenerateCapnpSchema(t *testing.T) {
 
 			for _, check := range checks {
 				s, err := utils.TestLoadFileRemoveID(filepath.Join(targetDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFileRemoveID(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Convey("Schema for Go", func() {
+		Convey("Schema for Go", t, func(c C) {
 			err = GenerateCapnp(&apiDef, targetDir, "go", "main")
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/struct/golang"
 			checks := []struct {
@@ -65,17 +65,17 @@ func TestGenerateCapnpSchema(t *testing.T) {
 
 			for _, check := range checks {
 				s, err := utils.TestLoadFileRemoveID(filepath.Join(targetDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFileRemoveID(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})

@@ -13,19 +13,19 @@ import (
 )
 
 func TestJSONSchema(t *testing.T) {
-	Convey("JSON Schema test", t, func() {
+	Convey("JSON Schema test", t, func(c C) {
 		apiDef := new(raml.APIDefinition)
 
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("array", func() {
+		Convey("array", t, func(c C) {
 			err := raml.ParseFile("../fixtures/raml-examples/typesystem/array-type.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			server := NewSanicServer(apiDef, "apidocs", targetDir, true, nil)
 			err = server.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/json_schema/array_type"
 			checks := []struct {
@@ -39,23 +39,23 @@ func TestJSONSchema(t *testing.T) {
 
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, handlersDir, jsonSchemaDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Convey("simple", func() {
+		Convey("simple", t, func(c C) {
 			err := raml.ParseFile("../fixtures/raml-examples/typesystem/simple.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			server := NewSanicServer(apiDef, "apidocs", targetDir, true, nil)
 			err = server.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/json_schema/simple"
 			checks := []struct {
@@ -67,22 +67,22 @@ func TestJSONSchema(t *testing.T) {
 
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, handlersDir, jsonSchemaDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Convey("struct", func() {
+		Convey("struct", t, func(c C) {
 			err := raml.ParseFile("../fixtures/struct/struct.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			err = generateJSONSchema(apiDef, targetDir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/json_schema/struct"
 			files := []string{
@@ -103,17 +103,17 @@ func TestJSONSchema(t *testing.T) {
 
 			for _, f := range files {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, jsonSchemaDir, f))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})

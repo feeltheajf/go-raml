@@ -2,4 +2,4 @@
 
 
 from .escape_type_postHandler import escape_type_postHandler
-from .uri_byUsers_id_getHandler import uri_byUsers_id_getHandler
+from .uri_users_id_getHandler import uri_users_id_getHandler

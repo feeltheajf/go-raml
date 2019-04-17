@@ -13,19 +13,19 @@ import (
 )
 
 func TestMethod(t *testing.T) {
-	Convey("server method with display name", t, func() {
+	Convey("server method with display name", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("resource with request body", func() {
+		Convey("resource with request body", t, func(c C) {
 			apiDef := new(raml.APIDefinition)
 			err := raml.ParseFile("../fixtures/server_resources/display_name/api.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			fs := NewFlaskServer(apiDef, "apidocs", targetDir, true, nil, false)
 
 			err = fs.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/method/flask/display_name"
 			files := []string{
@@ -34,34 +34,34 @@ func TestMethod(t *testing.T) {
 
 			for _, f := range files {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, f))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
 }
 
 func TestServerMethodWithComplexBody(t *testing.T) {
-	Convey("TestServerMethodWithComplexBody", t, func() {
+	Convey("TestServerMethodWithComplexBody", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		apiDef := new(raml.APIDefinition)
 		err = raml.ParseFile("../fixtures/body.raml", apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		fs := NewFlaskServer(apiDef, "apidocs", targetDir, true, nil, false)
 
 		err = fs.Generate()
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "./fixtures/method/server/complex_body"
 		files := []string{
@@ -70,33 +70,33 @@ func TestServerMethodWithComplexBody(t *testing.T) {
 
 		for _, f := range files {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, f))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
 }
 
 func TestServerMethodWithSpecialChars(t *testing.T) {
-	Convey("TestServerMethodWithSpecialChars", t, func() {
+	Convey("TestServerMethodWithSpecialChars", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		apiDef := new(raml.APIDefinition)
 		err = raml.ParseFile("../fixtures/special_chars.raml", apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		fs := NewFlaskServer(apiDef, "apidocs", targetDir, true, nil, false)
 
 		err = fs.Generate()
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "./fixtures/method/special_chars/server"
 		files := []string{
@@ -104,21 +104,21 @@ func TestServerMethodWithSpecialChars(t *testing.T) {
 			"escape_type_api.py",
 			"handlers/escape_type_postHandler.py",
 			"handlers/__init__.py",
-			"handlers/uri_byUsers_id_getHandler.py",
+			"handlers/uri_users_id_getHandler.py",
 			"handlers/schema/User2_0_schema.json",
 		}
 
 		for _, f := range files {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, f))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
@@ -126,18 +126,18 @@ func TestServerMethodWithSpecialChars(t *testing.T) {
 }
 
 func TestServerMethodWithCatchAllRecursiveURL(t *testing.T) {
-	Convey("Flask ", t, func() {
+	Convey("Flask ", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		apiDef := new(raml.APIDefinition)
 		err = raml.ParseFile("../fixtures/catch_all_recursive_url.raml", apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		fs := NewFlaskServer(apiDef, "apidocs", targetDir, true, nil, false)
 
 		err = fs.Generate()
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "./fixtures/method/catch_all_recursive_url/server/flask"
 		files := []string{
@@ -146,31 +146,31 @@ func TestServerMethodWithCatchAllRecursiveURL(t *testing.T) {
 
 		for _, f := range files {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, f))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
 
-	Convey("Sanic ", t, func() {
+	Convey("Sanic ", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		apiDef := new(raml.APIDefinition)
 		err = raml.ParseFile("../fixtures/catch_all_recursive_url.raml", apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		fs := NewSanicServer(apiDef, "apidocs", targetDir, true, nil)
 
 		err = fs.Generate()
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "./fixtures/method/catch_all_recursive_url/server/sanic"
 		files := []string{
@@ -179,15 +179,15 @@ func TestServerMethodWithCatchAllRecursiveURL(t *testing.T) {
 
 		for _, f := range files {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, f))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
@@ -195,18 +195,18 @@ func TestServerMethodWithCatchAllRecursiveURL(t *testing.T) {
 }
 
 func TestServerMethodWithInRootCatchAllRecursiveURL(t *testing.T) {
-	Convey("Flask ", t, func() {
+	Convey("Flask ", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		apiDef := new(raml.APIDefinition)
 		err = raml.ParseFile("../fixtures/catch_all_recursive_in_root.raml", apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		fs := NewFlaskServer(apiDef, "apidocs", targetDir, true, nil, false)
 
 		err = fs.Generate()
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "./fixtures/method/catch_all_recursive_url/server/flask-in-root"
 		files := []string{
@@ -216,31 +216,31 @@ func TestServerMethodWithInRootCatchAllRecursiveURL(t *testing.T) {
 
 		for _, f := range files {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, f))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
 
-	Convey("Sanic ", t, func() {
+	Convey("Sanic ", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		apiDef := new(raml.APIDefinition)
 		err = raml.ParseFile("../fixtures/catch_all_recursive_in_root.raml", apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		fs := NewSanicServer(apiDef, "apidocs", targetDir, true, nil)
 
 		err = fs.Generate()
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "./fixtures/method/catch_all_recursive_url/server/sanic-in-root"
 		files := []string{
@@ -250,15 +250,15 @@ func TestServerMethodWithInRootCatchAllRecursiveURL(t *testing.T) {
 
 		for _, f := range files {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, f))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})

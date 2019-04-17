@@ -14,6 +14,10 @@ class Cat(object):
     """
 
     @staticmethod
+    def _get_schema():
+        return {"kind": {"type": string_types, "required": True}}
+
+    @staticmethod
     def create(**kwargs):
         """
         :type kind: string_types
@@ -24,14 +28,16 @@ class Cat(object):
 
     def __init__(self, json=None, **kwargs):
         if json is None and not kwargs:
-            raise ValueError('No data or kwargs present')
+            raise ValueError("No data or kwargs present")
 
-        class_name = 'Cat'
+        class_name = "Cat"
         data = json or kwargs
 
         # set attributes
         data_types = [string_types]
-        self.kind = client_support.set_property('kind', data, data_types, False, [], False, True, class_name)
+        self.kind = client_support.set_property(
+            "kind", data, data_types, False, [], False, True, class_name
+        )
 
     def __str__(self):
         return self.as_json(indent=4)

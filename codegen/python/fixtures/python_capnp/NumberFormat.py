@@ -3,8 +3,9 @@
 """
 Auto-generated class for NumberFormat
 """
-import capnp
 import os
+
+import capnp
 
 from . import client_support
 
@@ -15,6 +16,20 @@ class NumberFormat(object):
     """
     auto-generated. don't touch.
     """
+
+    @staticmethod
+    def _get_schema():
+        return {
+            "d": {"type": float, "required": True},
+            "f": {"type": float, "required": True},
+            "i": {"type": int, "required": True},
+            "i16": {"type": int, "required": True},
+            "i32": {"type": int, "required": True},
+            "i64": {"type": int, "required": True},
+            "i8": {"type": int, "required": True},
+            "l": {"type": int, "required": True},
+            "num": {"type": float, "required": True},
+        }
 
     @staticmethod
     def create(**kwargs):
@@ -35,30 +50,48 @@ class NumberFormat(object):
 
     def __init__(self, json=None, **kwargs):
         if json is None and not kwargs:
-            raise ValueError('No data or kwargs present')
+            raise ValueError("No data or kwargs present")
 
-        class_name = 'NumberFormat'
+        class_name = "NumberFormat"
         data = json or kwargs
 
         # set attributes
         data_types = [float]
-        self.d = client_support.set_property('d', data, data_types, False, [], False, True, class_name)
+        self.d = client_support.set_property(
+            "d", data, data_types, False, [], False, True, class_name
+        )
         data_types = [float]
-        self.f = client_support.set_property('f', data, data_types, False, [], False, True, class_name)
+        self.f = client_support.set_property(
+            "f", data, data_types, False, [], False, True, class_name
+        )
         data_types = [int]
-        self.i = client_support.set_property('i', data, data_types, False, [], False, True, class_name)
+        self.i = client_support.set_property(
+            "i", data, data_types, False, [], False, True, class_name
+        )
         data_types = [int]
-        self.i16 = client_support.set_property('i16', data, data_types, False, [], False, True, class_name)
+        self.i16 = client_support.set_property(
+            "i16", data, data_types, False, [], False, True, class_name
+        )
         data_types = [int]
-        self.i32 = client_support.set_property('i32', data, data_types, False, [], False, True, class_name)
+        self.i32 = client_support.set_property(
+            "i32", data, data_types, False, [], False, True, class_name
+        )
         data_types = [int]
-        self.i64 = client_support.set_property('i64', data, data_types, False, [], False, True, class_name)
+        self.i64 = client_support.set_property(
+            "i64", data, data_types, False, [], False, True, class_name
+        )
         data_types = [int]
-        self.i8 = client_support.set_property('i8', data, data_types, False, [], False, True, class_name)
+        self.i8 = client_support.set_property(
+            "i8", data, data_types, False, [], False, True, class_name
+        )
         data_types = [int]
-        self.l = client_support.set_property('l', data, data_types, False, [], False, True, class_name)
+        self.l = client_support.set_property(
+            "l", data, data_types, False, [], False, True, class_name
+        )
         data_types = [float]
-        self.num = client_support.set_property('num', data, data_types, False, [], False, True, class_name)
+        self.num = client_support.set_property(
+            "num", data, data_types, False, [], False, True, class_name
+        )
 
     def __str__(self):
         return self.as_json(indent=4)
@@ -74,7 +107,7 @@ class NumberFormat(object):
         Load the class in capnp schema NumberFormat.capnp
         :rtype bytes
         """
-        template = capnp.load('%s/NumberFormat.capnp' % dir)
+        template = capnp.load("%s/NumberFormat.capnp" % dir)
         return template.NumberFormat.new_message(**self.as_dict()).to_bytes()
 
 
@@ -90,6 +123,10 @@ class NumberFormatCollection:
         :type binary: bytes. If none creates an empty capnp object.
         rtype: NumberFormat
         """
-        template = capnp.load('%s/NumberFormat.capnp' % dir)
-        struct = template.NumberFormat.from_bytes(binary) if binary else template.NumberFormat.new_message()
+        template = capnp.load("%s/NumberFormat.capnp" % dir)
+        struct = (
+            template.NumberFormat.from_bytes(binary)
+            if binary
+            else template.NumberFormat.new_message()
+        )
         return NumberFormat(**struct.to_dict(verbose=True))

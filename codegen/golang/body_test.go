@@ -12,19 +12,19 @@ import (
 )
 
 func TestGenerateStructFromBody(t *testing.T) {
-	Convey("generate struct body from raml", t, func() {
+	Convey("generate struct body from raml", t, func(c C) {
 		apiDef := new(raml.APIDefinition)
 
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("simple body", func() {
+		Convey("simple body", t, func(c C) {
 			err = raml.ParseFile("../fixtures/struct/struct.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			s := NewServer(apiDef, "main", "", "examples.com", false, targetDir, nil)
 			err := s.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/struct/body"
 			typeFiles := []string{
@@ -36,12 +36,12 @@ func TestGenerateStructFromBody(t *testing.T) {
 
 			for _, f := range typeFiles {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, typeDir, f+".go"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f+".txt"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 			apiFiles := []string{
@@ -53,22 +53,22 @@ func TestGenerateStructFromBody(t *testing.T) {
 
 			for _, f := range apiFiles {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, serverAPIDir, "users", f+".go"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f+".txt"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 		})
 
-		Convey("builtin type doesn't need validation code", func() {
+		Convey("builtin type doesn't need validation code", t, func(c C) {
 			err = raml.ParseFile("../fixtures/struct/validation.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			s := NewServer(apiDef, "main", "", "examples.com", false, targetDir, nil)
 			err := s.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/struct/validation"
 			files := []string{
@@ -79,16 +79,16 @@ func TestGenerateStructFromBody(t *testing.T) {
 
 			for _, f := range files {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, serverAPIDir, "builtin", f+".go"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f+".txt"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})

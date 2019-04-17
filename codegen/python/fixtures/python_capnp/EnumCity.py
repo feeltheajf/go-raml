@@ -3,12 +3,14 @@
 """
 Auto-generated class for EnumCity
 """
-import capnp
 import os
-from .EnumEnumCityEnumParks import EnumEnumCityEnumParks
+
 from six import string_types
 
+import capnp
+
 from . import client_support
+from .EnumEnumCityEnumParks import EnumEnumCityEnumParks
 
 dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -17,6 +19,13 @@ class EnumCity(object):
     """
     auto-generated. don't touch.
     """
+
+    @staticmethod
+    def _get_schema():
+        return {
+            "enumParks": {"type": EnumEnumCityEnumParks, "required": True},
+            "name": {"type": string_types, "required": True},
+        }
 
     @staticmethod
     def create(**kwargs):
@@ -30,16 +39,20 @@ class EnumCity(object):
 
     def __init__(self, json=None, **kwargs):
         if json is None and not kwargs:
-            raise ValueError('No data or kwargs present')
+            raise ValueError("No data or kwargs present")
 
-        class_name = 'EnumCity'
+        class_name = "EnumCity"
         data = json or kwargs
 
         # set attributes
         data_types = [EnumEnumCityEnumParks]
-        self.enumParks = client_support.set_property('enumParks', data, data_types, False, [], False, True, class_name)
+        self.enumParks = client_support.set_property(
+            "enumParks", data, data_types, False, [], False, True, class_name
+        )
         data_types = [string_types]
-        self.name = client_support.set_property('name', data, data_types, False, [], False, True, class_name)
+        self.name = client_support.set_property(
+            "name", data, data_types, False, [], False, True, class_name
+        )
 
     def __str__(self):
         return self.as_json(indent=4)
@@ -55,7 +68,7 @@ class EnumCity(object):
         Load the class in capnp schema EnumCity.capnp
         :rtype bytes
         """
-        template = capnp.load('%s/EnumCity.capnp' % dir)
+        template = capnp.load("%s/EnumCity.capnp" % dir)
         return template.EnumCity.new_message(**self.as_dict()).to_bytes()
 
 
@@ -71,6 +84,10 @@ class EnumCityCollection:
         :type binary: bytes. If none creates an empty capnp object.
         rtype: EnumCity
         """
-        template = capnp.load('%s/EnumCity.capnp' % dir)
-        struct = template.EnumCity.from_bytes(binary) if binary else template.EnumCity.new_message()
+        template = capnp.load("%s/EnumCity.capnp" % dir)
+        struct = (
+            template.EnumCity.from_bytes(binary)
+            if binary
+            else template.EnumCity.new_message()
+        )
         return EnumCity(**struct.to_dict(verbose=True))

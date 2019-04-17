@@ -6,10 +6,29 @@ from .unmarshall_error import UnmarshallError
 
 
 class UsersService:
+
+    _methods = (
+        "users_userId_address_addressId_get",
+        "users_userId_delete",
+        "getuserid",
+        "users_userId_post",
+        "users_delete",
+        "get_users",
+        "option_users",
+        "create_users",
+    )
+
     def __init__(self, client):
         self.client = client
 
-    async def users_byUserId_address_byAddressId_get(self, addressId, userId, headers=None, query_params=None, content_type="application/json"):
+    async def users_userId_address_addressId_get(
+        self,
+        addressId,
+        userId,
+        headers=None,
+        query_params=None,
+        content_type="application/json",
+    ):
         """
         get address id
         of address
@@ -18,8 +37,12 @@ class UsersService:
         if query_params is None:
             query_params = {}
 
-        uri = self.client.base_url + "/users/" + userId + "/address/" + addressId
-        resp = await self.client.get(uri, None, headers, query_params, content_type)
+        uri = (
+            self.client.base_url + "/users/" + userId + "/address/" + addressId
+        )
+        resp = await self.client.get(
+            uri, None, headers, query_params, content_type
+        )
         try:
             if resp.status == 200:
                 return Address(await resp.json()), resp
@@ -28,7 +51,13 @@ class UsersService:
         except Exception as e:
             raise UnmarshallError(resp, e.message)
 
-    async def users_byUserId_delete(self, userId, headers=None, query_params=None, content_type="application/json"):
+    async def users_userId_delete(
+        self,
+        userId,
+        headers=None,
+        query_params=None,
+        content_type="application/json",
+    ):
         """
         It is method for DELETE /users/{userId}
         """
@@ -36,9 +65,17 @@ class UsersService:
             query_params = {}
 
         uri = self.client.base_url + "/users/" + userId
-        return await self.client.delete(uri, None, headers, query_params, content_type)
+        return await self.client.delete(
+            uri, None, headers, query_params, content_type
+        )
 
-    async def getuserid(self, userId, headers=None, query_params=None, content_type="application/json"):
+    async def getuserid(
+        self,
+        userId,
+        headers=None,
+        query_params=None,
+        content_type="application/json",
+    ):
         """
         get id
         It is method for GET /users/{userId}
@@ -47,7 +84,9 @@ class UsersService:
             query_params = {}
 
         uri = self.client.base_url + "/users/" + userId
-        resp = await self.client.get(uri, None, headers, query_params, content_type)
+        resp = await self.client.get(
+            uri, None, headers, query_params, content_type
+        )
         try:
             if resp.status == 200:
                 return City(await resp.json()), resp
@@ -56,7 +95,14 @@ class UsersService:
         except Exception as e:
             raise UnmarshallError(resp, e.message)
 
-    async def users_byUserId_post(self, data, userId, headers=None, query_params=None, content_type="application/json"):
+    async def users_userId_post(
+        self,
+        data,
+        userId,
+        headers=None,
+        query_params=None,
+        content_type="application/json",
+    ):
         """
         post without request body
         It is method for POST /users/{userId}
@@ -65,9 +111,17 @@ class UsersService:
             query_params = {}
 
         uri = self.client.base_url + "/users/" + userId
-        return await self.client.post(uri, data, headers, query_params, content_type)
+        return await self.client.post(
+            uri, data, headers, query_params, content_type
+        )
 
-    async def users_delete(self, data, headers=None, query_params=None, content_type="application/json"):
+    async def users_delete(
+        self,
+        data,
+        headers=None,
+        query_params=None,
+        content_type="application/json",
+    ):
         """
         delete with request body
         It is method for DELETE /users
@@ -76,7 +130,9 @@ class UsersService:
             query_params = {}
 
         uri = self.client.base_url + "/users"
-        resp = await self.client.delete(uri, data, headers, query_params, content_type)
+        resp = await self.client.delete(
+            uri, data, headers, query_params, content_type
+        )
         try:
             if resp.status == 200:
                 return City(await resp.json()), resp
@@ -85,7 +141,13 @@ class UsersService:
         except Exception as e:
             raise UnmarshallError(resp, e.message)
 
-    async def get_users(self, data, headers=None, query_params=None, content_type="application/json"):
+    async def get_users(
+        self,
+        data,
+        headers=None,
+        query_params=None,
+        content_type="application/json",
+    ):
         """
         First line of comment.
         Second line of comment
@@ -95,9 +157,13 @@ class UsersService:
             query_params = {}
 
         uri = self.client.base_url + "/users"
-        return await self.client.get(uri, data, headers, query_params, content_type)
+        return await self.client.get(
+            uri, data, headers, query_params, content_type
+        )
 
-    async def option_users(self, headers=None, query_params=None, content_type="application/json"):
+    async def option_users(
+        self, headers=None, query_params=None, content_type="application/json"
+    ):
         """
         It is method for OPTIONS /users
         """
@@ -105,9 +171,17 @@ class UsersService:
             query_params = {}
 
         uri = self.client.base_url + "/users"
-        return await self.client.options(uri, None, headers, query_params, content_type)
+        return await self.client.options(
+            uri, None, headers, query_params, content_type
+        )
 
-    async def create_users(self, data, headers=None, query_params=None, content_type="application/json"):
+    async def create_users(
+        self,
+        data,
+        headers=None,
+        query_params=None,
+        content_type="application/json",
+    ):
         """
         create users
         It is method for POST /users
@@ -116,7 +190,9 @@ class UsersService:
             query_params = {}
 
         uri = self.client.base_url + "/users"
-        resp = await self.client.post(uri, data, headers, query_params, content_type)
+        resp = await self.client.post(
+            uri, data, headers, query_params, content_type
+        )
         try:
             if resp.status == 200:
                 return City(await resp.json()), resp

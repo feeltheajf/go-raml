@@ -6,7 +6,7 @@ install:
   - sudo apt-get install capnproto
   - go get -u github.com/jteeuwen/go-bindata/...
   - sudo apt-get install -y python3 python3-pip
-  - sudo pip3 install black
+  - sudo pip3 install black isort
   - sudo pip3 install -r codegen/python/gentest/requirements.txt
 go:
   - 1.8
@@ -18,3 +18,10 @@ script:
   - make test
   - make gogentest
   - make pygentest
+
+notifications:
+  slack:
+    on_success: never
+    on_failure: always
+    rooms:
+      - feeltheajf:KtpBSt1d694nkztes1h4Nbn0#ci

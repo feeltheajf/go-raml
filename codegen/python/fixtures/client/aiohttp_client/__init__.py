@@ -3,13 +3,14 @@
 from .Address import Address
 from .City import City
 from .GetUsersReqBody import GetUsersReqBody
-
-from .users_service import UsersService
-
 from .http_client import HTTPClient
+from .users_service import UsersService
 
 
 class Client:
+
+    _services = ("users",)
+
     def __init__(self, loop, base_uri="http://api.jumpscale.com/v3"):
         http_client = HTTPClient(loop, base_uri)
 

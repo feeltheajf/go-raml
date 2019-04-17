@@ -13,20 +13,20 @@ import (
 )
 
 func TestGenerateClient(t *testing.T) {
-	Convey("generate client from raml", t, func() {
+	Convey("generate client from raml", t, func(c C) {
 		var apiDef raml.APIDefinition
 		err := raml.ParseFile("../fixtures/client_resources/client.raml", &apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		client := Client{
 			APIDef: &apiDef,
 			Dir:    targetDir,
 		}
 		err = client.Generate()
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "./fixtures/resource/client"
 		checks := []struct {
@@ -39,15 +39,15 @@ func TestGenerateClient(t *testing.T) {
 
 		for _, check := range checks {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})

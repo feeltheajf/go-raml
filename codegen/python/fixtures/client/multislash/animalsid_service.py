@@ -2,10 +2,19 @@
 
 
 class AnimalsidService:
+
+    _methods = ("animalsid_get",)
+
     def __init__(self, client):
         self.client = client
 
-    def animalsid_get(self, id, headers=None, query_params=None, content_type="application/json"):
+    def animalsid_get(
+        self,
+        id,
+        headers=None,
+        query_params=None,
+        content_type="application/json",
+    ):
         """
         get animal
         It is method for GET /animals/{id}

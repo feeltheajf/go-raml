@@ -5,10 +5,19 @@ from .unmarshall_error import UnmarshallError
 
 
 class TreeService:
+
+    _methods = ("get",)
+
     def __init__(self, client):
         self.client = client
 
-    async def get(self, path, headers=None, query_params=None, content_type="application/json"):
+    async def get(
+        self,
+        path,
+        headers=None,
+        query_params=None,
+        content_type="application/json",
+    ):
         """
         It is method for GET /api/v1/root/{path:*}
         """
@@ -16,7 +25,9 @@ class TreeService:
             query_params = {}
 
         uri = self.client.base_url + "/api/v1/root" + path
-        resp = await self.client.get(uri, None, headers, query_params, content_type)
+        resp = await self.client.get(
+            uri, None, headers, query_params, content_type
+        )
         try:
             if resp.status == 200:
                 return File(await resp.json()), resp

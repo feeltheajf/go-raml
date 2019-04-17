@@ -3,16 +3,23 @@
 """
 Auto-generated class for Cage
 """
-from .animal import animal
 from six import string_types
 
 from . import client_support
+from .animal import animal
 
 
 class Cage(object):
     """
     auto-generated. don't touch.
     """
+
+    @staticmethod
+    def _get_schema():
+        return {
+            "colours": {"type": string_types, "required": True},
+            "owner": {"type": animal, "required": True},
+        }
 
     @staticmethod
     def create(**kwargs):
@@ -26,16 +33,20 @@ class Cage(object):
 
     def __init__(self, json=None, **kwargs):
         if json is None and not kwargs:
-            raise ValueError('No data or kwargs present')
+            raise ValueError("No data or kwargs present")
 
-        class_name = 'Cage'
+        class_name = "Cage"
         data = json or kwargs
 
         # set attributes
         data_types = [string_types]
-        self.colours = client_support.set_property('colours', data, data_types, False, [], False, True, class_name)
+        self.colours = client_support.set_property(
+            "colours", data, data_types, False, [], False, True, class_name
+        )
         data_types = [animal]
-        self.owner = client_support.set_property('owner', data, data_types, False, [], False, True, class_name)
+        self.owner = client_support.set_property(
+            "owner", data, data_types, False, [], False, True, class_name
+        )
 
     def __str__(self):
         return self.as_json(indent=4)

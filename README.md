@@ -1,5 +1,6 @@
 # go-raml
-[![Build Status](https://travis-ci.org/Jumpscale/go-raml.svg?branch=master)](https://travis-ci.org/Jumpscale/go-raml)
+[![Build Status](https://travis-ci.com/feeltheajf/go-raml.svg?branch=master)](https://travis-ci.com/feeltheajf/go-raml)
+[![codecov](https://codecov.io/gh/feeltheajf/go-raml/branch/master/graph/badge.svg)](https://codecov.io/gh/feeltheajf/go-raml)
 
 
 Table of Contents
@@ -146,7 +147,7 @@ Executes this command to generates Sanic server
    --no-main                                    Do not generate a main.go file
    --no-apidocs                                 Do not generate API Docs in /apidocs/ endpoint
    --import-path "examples.com/ramlcode"        import path of the generated code
-   --lib-root-urls								Array of libraries root URLs 
+   --lib-root-urls								Array of libraries root URLs
 ```
 
 ## Generating Client
@@ -249,7 +250,7 @@ The server will then run in port 5000, you can go to http://localhost:5000 to se
 
 ### Using Go client library
 
-Generated go client library can be used directly as modular package of your project. 
+Generated go client library can be used directly as modular package of your project.
 
 It has `AuthHeader` field, which if not empty will be used as value of `Authorization` header on each request.
 
@@ -314,15 +315,15 @@ Short descriptions about how the generator generates the code from raml file are
 - [Go](./docs/go_generator.md)
 - [Python](./docs/python_generator.md)
 - [Nim](./docs/nim_generator.md)
- 
+
 ## Tutorial
- 
+
  Tutorial for Go, Python, and Nim is available at [docs/tutorial directory](./docs/tutorial)
- 
+
  Check all the available go commands [here](./docs/tutorial/go/README.md)
- 
+
  Check all the available python commands [here](./docs/tutorial/python/README.md)
- 
+
  Check all the available nim commands [here](./docs/tutorial/nim/README.md)
 
 ## CREDITS

@@ -3,16 +3,26 @@
 """
 Auto-generated class for MultipleInheritance
 """
-from .EnumCity import EnumCity
 from six import string_types
 
 from . import client_support
+from .EnumCity import EnumCity
 
 
 class MultipleInheritance(object):
     """
     auto-generated. don't touch.
     """
+
+    @staticmethod
+    def _get_schema():
+        return {
+            "cities": {"type": [EnumCity], "required": True},
+            "color": {"type": string_types, "required": True},
+            "colours": {"type": [string_types], "required": True},
+            "kind": {"type": string_types, "required": True},
+            "name": {"type": string_types, "required": False},
+        }
 
     @staticmethod
     def create(**kwargs):
@@ -29,22 +39,32 @@ class MultipleInheritance(object):
 
     def __init__(self, json=None, **kwargs):
         if json is None and not kwargs:
-            raise ValueError('No data or kwargs present')
+            raise ValueError("No data or kwargs present")
 
-        class_name = 'MultipleInheritance'
+        class_name = "MultipleInheritance"
         data = json or kwargs
 
         # set attributes
         data_types = [EnumCity]
-        self.cities = client_support.set_property('cities', data, data_types, False, [], True, True, class_name)
+        self.cities = client_support.set_property(
+            "cities", data, data_types, False, [], True, True, class_name
+        )
         data_types = [string_types]
-        self.color = client_support.set_property('color', data, data_types, False, [], False, True, class_name)
+        self.color = client_support.set_property(
+            "color", data, data_types, False, [], False, True, class_name
+        )
         data_types = [string_types]
-        self.colours = client_support.set_property('colours', data, data_types, False, [], True, True, class_name)
+        self.colours = client_support.set_property(
+            "colours", data, data_types, False, [], True, True, class_name
+        )
         data_types = [string_types]
-        self.kind = client_support.set_property('kind', data, data_types, False, [], False, True, class_name)
+        self.kind = client_support.set_property(
+            "kind", data, data_types, False, [], False, True, class_name
+        )
         data_types = [string_types]
-        self.name = client_support.set_property('name', data, data_types, False, [], False, False, class_name)
+        self.name = client_support.set_property(
+            "name", data, data_types, False, [], False, False, class_name
+        )
 
     def __str__(self):
         return self.as_json(indent=4)

@@ -30,11 +30,18 @@ func (m method) ReqBody() string {
 	return commons.NormalizeIdentifierWithLib(m.reqBody, globAPIDef)
 }
 
+// TODO: Think of a better way to do it
 func (m method) BasicTypes() []string {
 	var types []string
-
-	bodyType := m.Bodies.ApplicationJSON.Type
+	var bodyType interface{}
 	var supportedBodyTypes []interface{}
+
+	if m.Bodies.ApplicationJSON != nil {
+		bodyType = m.Bodies.ApplicationJSON.Type
+	} else {
+		// TODO: Find proper convert method
+		bodyType = strings.Replace(m.Bodies.Type, ".", "_", -1)
+	}
 
 	switch x := bodyType.(type) {
 	case []interface{}:
@@ -43,9 +50,13 @@ func (m method) BasicTypes() []string {
 		supportedBodyTypes = append(supportedBodyTypes, x)
 	}
 
-	for _, t := range supportedBodyTypes {
-		if t != "" && t != "object" {
-			for _, v := range strings.Split(t.(string), " | ") {
+	for _, x := range supportedBodyTypes {
+		t := strings.Replace(x.(string), "[]", "", -1)
+		if t == "" {
+			continue
+		}
+		if t != "object" {
+			for _, v := range strings.Split(t, " | ") {
 				types = append(types, v)
 			}
 		} else {
@@ -56,7 +67,12 @@ func (m method) BasicTypes() []string {
 }
 
 func (m method) BasicTypesString() string {
-	return strings.Join(m.BasicTypes(), ", ")
+	bt := m.BasicTypes()
+	bts := strings.Join(bt, ", ")
+	if len(bt) > 0 {
+		bts += ","
+	}
+	return bts
 }
 
 func (m method) escapedEndpoint() string {

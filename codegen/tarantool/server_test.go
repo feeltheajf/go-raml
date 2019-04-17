@@ -1,11 +1,12 @@
 package tarantool
 
 import (
+	"os"
+
 	"github.com/Jumpscale/go-raml/raml"
 	"github.com/Jumpscale/go-raml/utils"
 
 	"io/ioutil"
-	"os"
 	"path/filepath"
 	"testing"
 
@@ -13,20 +14,20 @@ import (
 )
 
 func TestServer(t *testing.T) {
-	Convey("server generator", t, func() {
+	Convey("server generator", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
-		Convey("Tarantool server", func() {
+		c.So(err, ShouldBeNil)
+		Convey("Tarantool server", t, func(c C) {
 			apiDef := new(raml.APIDefinition)
 			err = raml.ParseFile("../fixtures/server/user_api/api.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			s := NewServer(apiDef, "apidocs", targetDir)
 			s.generateResources()
 			err := s.generateMain()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 			err = s.generateResources()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/server/"
 			checks := []string{
@@ -41,17 +42,17 @@ func TestServer(t *testing.T) {
 			}
 			for _, check := range checks {
 				s, err := utils.TestLoadFileRemoveID(filepath.Join(targetDir, check))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFileRemoveID(filepath.Join(rootFixture, check))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})

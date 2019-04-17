@@ -16,7 +16,7 @@ type DocsCommand struct {
 
 //Execute generates a client from a RAML specification
 func (command *DocsCommand) Execute() error {
-	log.Debug("Generating api docs in %s", command.Format)
+	log.Debugf("Generating api docs in %s", command.Format)
 	apiDef := new(raml.APIDefinition)
 	err := raml.ParseFile(command.RamlFile, apiDef)
 	if err != nil {

@@ -10,28 +10,28 @@ import (
 
 func TestDateTimeRFC2616(t *testing.T) {
 
-	Convey("datetime RF2616", t, func() {
-		Convey("not in struct", func() {
+	Convey("datetime RF2616", t, func(c C) {
+		Convey("not in struct", t, func(c C) {
 			dateStr := "Sun, 28 Feb 2016 16:41:41 GMT"
 
 			// create time
 			tim, err := time.Parse(dateTimeRFC2616Fmt, dateStr)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			to := DateTimeRFC2616(tim)
 
 			// marshal
 			b, err := json.Marshal(&to)
-			So(err, ShouldBeNil)
-			So(string(b), ShouldEqual, `"`+dateStr+`"`)
+			c.So(err, ShouldBeNil)
+			c.So(string(b), ShouldEqual, `"`+dateStr+`"`)
 
 			// unmarshal
 			err = json.Unmarshal([]byte(`"`+dateStr+`"`), &to)
-			So(err, ShouldBeNil)
-			So(to.String(), ShouldEqual, dateStr)
+			c.So(err, ShouldBeNil)
+			c.So(to.String(), ShouldEqual, dateStr)
 		})
 
-		Convey("in struct", func() {
+		Convey("in struct", t, func(c C) {
 			jsonBytes := []byte(`{"name":"google","born":"Sun, 28 Feb 2016 16:41:41 GMT"}`)
 			var data = struct {
 				Name string          `json:"name"`
@@ -40,13 +40,13 @@ func TestDateTimeRFC2616(t *testing.T) {
 
 			// unmarshal
 			err := json.Unmarshal(jsonBytes, &data)
-			So(err, ShouldBeNil)
-			So(data.Born.String(), ShouldEqual, "Sun, 28 Feb 2016 16:41:41 GMT")
+			c.So(err, ShouldBeNil)
+			c.So(data.Born.String(), ShouldEqual, "Sun, 28 Feb 2016 16:41:41 GMT")
 
 			// marshal again
 			b, err := json.Marshal(&data)
-			So(err, ShouldBeNil)
-			So(string(b), ShouldEqual, string(jsonBytes))
+			c.So(err, ShouldBeNil)
+			c.So(string(b), ShouldEqual, string(jsonBytes))
 		})
 	})
 

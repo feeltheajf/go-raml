@@ -13,19 +13,18 @@ import (
 )
 
 func TestGenerateClassFromBody(t *testing.T) {
-	Convey("Class from method body", t, func() {
-		apiDef := new(raml.APIDefinition)
-
+	Convey("Class from method body", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("from RAML", func() {
+		Convey("from RAML", t, func(c C) {
+			apiDef := new(raml.APIDefinition)
 			err := raml.ParseFile("../fixtures/struct/struct.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			fs := NewFlaskServer(apiDef, "apidocs", targetDir, true, nil, false)
 			err = fs.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/from_body/"
 			checks := []struct {
@@ -37,23 +36,24 @@ func TestGenerateClassFromBody(t *testing.T) {
 
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Convey("from RAML with JSON", func() {
+		Convey("from RAML with JSON", t, func(c C) {
+			apiDef := new(raml.APIDefinition)
 			err := raml.ParseFile("../fixtures/struct/json/api.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			fs := NewFlaskServer(apiDef, "apidocs", targetDir, true, nil, false)
 			err = fs.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/from_body/json/"
 			checks := []struct {
@@ -65,17 +65,17 @@ func TestGenerateClassFromBody(t *testing.T) {
 
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})

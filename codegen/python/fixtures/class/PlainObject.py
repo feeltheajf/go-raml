@@ -13,6 +13,10 @@ class PlainObject(object):
     """
 
     @staticmethod
+    def _get_schema():
+        return {"obj": {"type": dict, "required": True}}
+
+    @staticmethod
     def create(**kwargs):
         """
         :type obj: dict
@@ -23,14 +27,16 @@ class PlainObject(object):
 
     def __init__(self, json=None, **kwargs):
         if json is None and not kwargs:
-            raise ValueError('No data or kwargs present')
+            raise ValueError("No data or kwargs present")
 
-        class_name = 'PlainObject'
+        class_name = "PlainObject"
         data = json or kwargs
 
         # set attributes
         data_types = [dict]
-        self.obj = client_support.set_property('obj', data, data_types, False, [], False, True, class_name)
+        self.obj = client_support.set_property(
+            "obj", data, data_types, False, [], False, True, class_name
+        )
 
     def __str__(self):
         return self.as_json(indent=4)

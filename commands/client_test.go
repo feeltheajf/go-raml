@@ -11,11 +11,11 @@ import (
 )
 
 func TestClientGeneration(t *testing.T) {
-	Convey("test command client generattion", t, func() {
+	Convey("test command client generattion", t, func(c C) {
 		targetdir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("Test run client command using go language", func() {
+		Convey("Test run client command using go language", t, func(c C) {
 			cmd := ClientCommand{
 				Language:    "go",
 				Dir:         targetdir,
@@ -24,18 +24,18 @@ func TestClientGeneration(t *testing.T) {
 				ImportPath:  "examples.com/client",
 			}
 			err := cmd.Execute()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			s, err := utils.TestLoadFile(filepath.Join(targetdir, "client_structapitest.go"))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile("../codegen/golang/fixtures/client_resources/client_structapitest.txt")
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(tmpl, ShouldEqual, s)
+			c.So(tmpl, ShouldEqual, s)
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			//cleanup
 			os.RemoveAll(targetdir)
 		})

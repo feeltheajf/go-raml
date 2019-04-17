@@ -77,7 +77,7 @@ func ParseDescription(desc string) []string {
 // if file already exist and override==false, file won't be regenerated
 // funcMap = this parameter is used for passing go function to the template
 func GenerateFile(data interface{}, tmplFile, tmplName, filename string, override bool) error {
-	if !override && isFileExist(filename) {
+	if !override && isFileExist(filename) && os.Getenv("GORAML_AUTOTEST") != "TRUE" {
 		log.Infof("file %v already exist and override=false, no need to regenerate", filename)
 		return nil
 	}
@@ -110,7 +110,9 @@ func GenerateFile(data interface{}, tmplFile, tmplName, filename string, overrid
 	}
 	defer f.Close()
 
-	log.Infof("generating file %v", filename)
+	if os.Getenv("GORAML_AUTOTEST") != "TRUE" {
+		log.Infof("generating file %v", filename)
+	}
 	if err := t.ExecuteTemplate(f, tmplName, data); err != nil {
 		return err
 	}
@@ -181,7 +183,17 @@ func runGoFmt(filePath string) error {
 }
 
 func runBlack(filename string) error {
+	// run iSort to remove duplicate imports
 	args := []string{
+		filename,
+	}
+	if out, err := exec.Command("isort", args...).CombinedOutput(); err != nil {
+		log.Errorf("Error running isort on '%s' failed:\n%s",
+			filename, string(out))
+		return errors.New("isort failed: make sure you have it installed")
+	}
+	// run Black
+	args = []string{
 		"-l",
 		"79",
 		filename,

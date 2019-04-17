@@ -3,6 +3,6 @@
 from flask import jsonify, request
 
 
-def uri_byUsers_id_getHandler(users_id):
+def uri_users_id_getHandler(users_id):
 
     return jsonify()

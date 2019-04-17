@@ -9,7 +9,7 @@ import (
 )
 
 func TestCheckDuplicatedTitleTypes(t *testing.T) {
-	Convey("TestCheckDuplicatedTitleTypes", t, func() {
+	Convey("TestCheckDuplicatedTitleTypes", t, func(c C) {
 		tests := []struct {
 			apiDef *raml.APIDefinition
 			err    bool
@@ -35,9 +35,9 @@ func TestCheckDuplicatedTitleTypes(t *testing.T) {
 		for _, test := range tests {
 			err := CheckDuplicatedTitleTypes(test.apiDef)
 			if test.err {
-				So(err, ShouldNotBeNil)
+				c.So(err, ShouldNotBeNil)
 			} else {
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 			}
 		}
 

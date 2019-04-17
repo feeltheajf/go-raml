@@ -9,28 +9,28 @@ import (
 )
 
 func TestTimeOnly(t *testing.T) {
-	Convey("time-only", t, func() {
-		Convey("not in struct", func() {
+	Convey("time-only", t, func(c C) {
+		Convey("not in struct", t, func(c C) {
 			dateStr := "10:09:08"
 
 			// create time
 			tim, err := time.Parse("15:04:05", dateStr)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			to := TimeOnly(tim)
 
 			// marshal
 			b, err := json.Marshal(&to)
-			So(err, ShouldBeNil)
-			So(string(b), ShouldEqual, `"`+dateStr+`"`)
+			c.So(err, ShouldBeNil)
+			c.So(string(b), ShouldEqual, `"`+dateStr+`"`)
 
 			// unmarshal
 			err = json.Unmarshal([]byte(`"`+dateStr+`"`), &to)
-			So(err, ShouldBeNil)
-			So(to.String(), ShouldEqual, dateStr)
+			c.So(err, ShouldBeNil)
+			c.So(to.String(), ShouldEqual, dateStr)
 		})
 
-		Convey("in struct", func() {
+		Convey("in struct", t, func(c C) {
 			jsonBytes := []byte(`{"name":"google","return":"10:09:08"}`)
 			var data = struct {
 				Name   string   `json:"name"`
@@ -39,13 +39,13 @@ func TestTimeOnly(t *testing.T) {
 
 			// unmarshal
 			err := json.Unmarshal(jsonBytes, &data)
-			So(err, ShouldBeNil)
-			So(data.Return.String(), ShouldEqual, "10:09:08")
+			c.So(err, ShouldBeNil)
+			c.So(data.Return.String(), ShouldEqual, "10:09:08")
 
 			// marshal again
 			b, err := json.Marshal(&data)
-			So(err, ShouldBeNil)
-			So(string(b), ShouldEqual, string(jsonBytes))
+			c.So(err, ShouldBeNil)
+			c.So(string(b), ShouldEqual, string(jsonBytes))
 		})
 	})
 }

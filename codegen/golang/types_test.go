@@ -7,19 +7,19 @@ import (
 )
 
 func TestTypeConversion(t *testing.T) {
-	Convey("Test Type Conversion", t, func() {
+	Convey("Test Type Conversion", t, func(c C) {
 		globGoramlPkgDir = "goraml"
-		Convey("Type conversion", func() {
-			So(convertToGoType("string", ""), ShouldEqual, "string")
-			So(convertToGoType("number", ""), ShouldEqual, "float64")
-			So(convertToGoType("integer", ""), ShouldEqual, "int")
-			So(convertToGoType("boolean", ""), ShouldEqual, "bool")
-			So(convertToGoType("file", ""), ShouldEqual, "string")
-			So(convertToGoType("date-only", ""), ShouldEqual, "goraml.DateOnly")
-			So(convertToGoType("time-only", ""), ShouldEqual, "goraml.TimeOnly")
-			So(convertToGoType("Object", ""), ShouldEqual, "Object")
-			So(convertToGoType("string[]", ""), ShouldEqual, "[]string")
-			So(convertToGoType("string[][]", ""), ShouldEqual, "[][]string")
+		Convey("Type conversion", t, func(c C) {
+			c.So(convertToGoType("string", ""), ShouldEqual, "string")
+			c.So(convertToGoType("number", ""), ShouldEqual, "float64")
+			c.So(convertToGoType("integer", ""), ShouldEqual, "int")
+			c.So(convertToGoType("boolean", ""), ShouldEqual, "bool")
+			c.So(convertToGoType("file", ""), ShouldEqual, "string")
+			c.So(convertToGoType("date-only", ""), ShouldEqual, "goraml.DateOnly")
+			c.So(convertToGoType("time-only", ""), ShouldEqual, "goraml.TimeOnly")
+			c.So(convertToGoType("Object", ""), ShouldEqual, "Object")
+			c.So(convertToGoType("string[]", ""), ShouldEqual, "[]string")
+			c.So(convertToGoType("string[][]", ""), ShouldEqual, "[][]string")
 			//So(convertToGoType("string | Person"), ShouldEqual, "interface{}")
 			//So(convertToGoType("(string | Person)[]"), ShouldEqual, "[]interface{}")
 		})

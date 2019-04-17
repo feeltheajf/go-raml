@@ -14,18 +14,18 @@ import (
 
 // TODO FIXME : it disabled because this test is failed and WTF support is planned to be removed
 func testLibrary(t *testing.T) {
-	Convey("Library usage in server", t, func() {
+	Convey("Library usage in server", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		apiDef := new(raml.APIDefinition)
 		err = raml.ParseFile("../fixtures/libraries/api.raml", apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		libRootURLs := []string{"https://raw.githubusercontent.com/Jumpscale/go-raml/master/codegen/fixtures/libraries"}
 		server := NewFlaskServer(apiDef, "apidocs", targetDir, true, libRootURLs, false)
 		err = server.Generate()
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "./fixtures/libraries/python_server"
 		checks := []struct {
@@ -40,15 +40,15 @@ func testLibrary(t *testing.T) {
 
 		for _, check := range checks {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})

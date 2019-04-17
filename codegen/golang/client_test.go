@@ -13,20 +13,20 @@ import (
 )
 
 func TestClientBasic(t *testing.T) {
-	Convey("Test client", t, func() {
+	Convey("Test client", t, func(c C) {
 		var apiDef raml.APIDefinition
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("users api", func() {
+		Convey("users api", t, func(c C) {
 			err = raml.ParseFile("../fixtures/client_resources/client.raml", &apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			client, err := NewClient(&apiDef, "theclient", "examples.com/libro", targetDir, nil)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			err = client.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/client_resources"
 			checks := []struct {
@@ -38,36 +38,36 @@ func TestClientBasic(t *testing.T) {
 			}
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
 }
 
 func TestClientMultiSlashEndpoint(t *testing.T) {
-	Convey("Test client with multislash endpoint", t, func() {
+	Convey("Test client with multislash endpoint", t, func(c C) {
 		var apiDef raml.APIDefinition
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("users api", func() {
+		Convey("users api", t, func(c C) {
 			err = raml.ParseFile("../fixtures/client_resources/multislash.raml", &apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			client, err := NewClient(&apiDef, "theclient", "examples.com/libro", targetDir, nil)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			err = client.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/client_resources/multislash"
 			checks := []struct {
@@ -79,16 +79,16 @@ func TestClientMultiSlashEndpoint(t *testing.T) {
 			}
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
