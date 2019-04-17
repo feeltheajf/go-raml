@@ -3,8 +3,8 @@ package golang
 import (
 	"path/filepath"
 
-	"github.com/Jumpscale/go-raml/codegen/commons"
-	"github.com/Jumpscale/go-raml/codegen/date"
+	"github.com/feeltheajf/go-raml/codegen/commons"
+	"github.com/feeltheajf/go-raml/codegen/date"
 )
 
 // date generator

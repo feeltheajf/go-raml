@@ -4,8 +4,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Jumpscale/go-raml/codegen/commons"
-	"github.com/Jumpscale/go-raml/codegen/resource"
+	"github.com/feeltheajf/go-raml/codegen/commons"
+	"github.com/feeltheajf/go-raml/codegen/resource"
 )
 
 // generate Server's Go representation of RAML resources

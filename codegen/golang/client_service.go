@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Jumpscale/go-raml/codegen/commons"
-	"github.com/Jumpscale/go-raml/codegen/resource"
+	"github.com/feeltheajf/go-raml/codegen/commons"
+	"github.com/feeltheajf/go-raml/codegen/resource"
 )
 
 // ClientService represents a root endpoint of an API

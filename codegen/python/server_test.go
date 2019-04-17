@@ -8,8 +8,8 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	"github.com/Jumpscale/go-raml/raml"
-	"github.com/Jumpscale/go-raml/utils"
+	"github.com/feeltheajf/go-raml/raml"
+	"github.com/feeltheajf/go-raml/utils"
 )
 
 func TestServer(t *testing.T) {

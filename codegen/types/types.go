@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/Jumpscale/go-raml/codegen/commons"
-	"github.com/Jumpscale/go-raml/raml"
+	"github.com/feeltheajf/go-raml/codegen/commons"
+	"github.com/feeltheajf/go-raml/raml"
 )
 
 // TypeInBody represents a Type that defined inline

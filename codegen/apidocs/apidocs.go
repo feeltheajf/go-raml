@@ -10,8 +10,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Jumpscale/go-raml/codegen/libraries"
-	"github.com/Jumpscale/go-raml/raml"
+	"github.com/feeltheajf/go-raml/codegen/libraries"
+	"github.com/feeltheajf/go-raml/raml"
 )
 
 // Generate generates API docs using api-console

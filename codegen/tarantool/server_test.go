@@ -3,8 +3,8 @@ package tarantool
 import (
 	"os"
 
-	"github.com/Jumpscale/go-raml/raml"
-	"github.com/Jumpscale/go-raml/utils"
+	"github.com/feeltheajf/go-raml/raml"
+	"github.com/feeltheajf/go-raml/utils"
 
 	"io/ioutil"
 	"path/filepath"

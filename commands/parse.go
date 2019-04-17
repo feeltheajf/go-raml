@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/Jumpscale/go-raml/raml"
+	"github.com/feeltheajf/go-raml/raml"
 
 	log "github.com/Sirupsen/logrus"
 )

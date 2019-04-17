@@ -14,8 +14,8 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 
-	"github.com/Jumpscale/go-raml/codegen/templates"
-	"github.com/Jumpscale/go-raml/raml"
+	"github.com/feeltheajf/go-raml/codegen/templates"
+	"github.com/feeltheajf/go-raml/raml"
 )
 
 var (

@@ -3,8 +3,8 @@ package commands
 import (
 	"strings"
 
-	"github.com/Jumpscale/go-raml/codegen"
-	"github.com/Jumpscale/go-raml/raml"
+	"github.com/feeltheajf/go-raml/codegen"
+	"github.com/feeltheajf/go-raml/raml"
 
 	log "github.com/Sirupsen/logrus"
 )

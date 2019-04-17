@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/Jumpscale/go-raml/docs/tutorial/go/client/goramldir"
+	"github.com/feeltheajf/go-raml/docs/tutorial/go/client/goramldir"
 )
 
 var (

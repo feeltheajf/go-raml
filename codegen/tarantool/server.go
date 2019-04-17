@@ -11,9 +11,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Jumpscale/go-raml/codegen/capnp"
-	"github.com/Jumpscale/go-raml/codegen/commons"
-	"github.com/Jumpscale/go-raml/raml"
+	"github.com/feeltheajf/go-raml/codegen/capnp"
+	"github.com/feeltheajf/go-raml/codegen/commons"
+	"github.com/feeltheajf/go-raml/raml"
 )
 
 const (
