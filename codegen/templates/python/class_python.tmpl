@@ -24,14 +24,16 @@ class {{.Name}}(object):
     auto-generated. don't touch.
     """
 
-    _schema = {
-        {{ range $key, $val := .Fields -}}
-        "{{$val.Name}}": {
-            "type": {{if $val.IsList}}[{{$val.DataType}}]{{else}}{{$val.DataType}}{{end}},
-            "required": {{if $val.Required}}True{{else}}False{{end}}
-        },
-        {{ end -}}
-    }
+    @staticmethod
+    def _get_schema():
+        return {
+                {{ range $key, $val := .Fields -}}
+                "{{$val.Name}}": {
+                    "type": {{if $val.IsList}}[{{$val.DataType}}]{{else}}{{$val.DataType}}{{end}},
+                    "required": {{if $val.Required}}True{{else}}False{{end}}
+                },
+                {{ end -}}
+            }
 
     @staticmethod
     def create(**kwargs):

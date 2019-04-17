@@ -33,13 +33,24 @@ func (m method) ReqBody() string {
 func (m method) BasicTypes() []string {
 	var types []string
 
-	t := m.Bodies.ApplicationJSON.TypeString()
-	if t != "" && t != "object" {
-		for _, v := range strings.Split(t, " | ") {
-			types = append(types, v)
+	bodyType := m.Bodies.ApplicationJSON.Type
+	var supportedBodyTypes []interface{}
+
+	switch x := bodyType.(type) {
+	case []interface{}:
+		supportedBodyTypes = x
+	case string:
+		supportedBodyTypes = append(supportedBodyTypes, x)
+	}
+
+	for _, t := range supportedBodyTypes {
+		if t != "" && t != "object" {
+			for _, v := range strings.Split(t.(string), " | ") {
+				types = append(types, v)
+			}
+		} else {
+			types = append(types, casee.ToPascalCase(m.reqBody))
 		}
-	} else {
-		types = append(types, casee.ToPascalCase(m.reqBody))
 	}
 	return types
 }
