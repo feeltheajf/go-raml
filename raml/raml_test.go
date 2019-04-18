@@ -92,18 +92,18 @@ func TestParsing(t *testing.T) {
 }
 
 func TestMethodStringer(t *testing.T) {
-	Convey("method stringer", t, func() {
+	Convey("method stringer", t, func(c C) {
 		def := new(APIDefinition)
 		err := ParseFile("./samples/simple_example.raml", def)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		r := def.Resources["/resources"]
-		So(r.Get.Name, ShouldEqual, "GET")
+		c.So(r.Get.Name, ShouldEqual, "GET")
 
 		n := r.Nested["/{resourceId}"]
-		So(n.Get.Name, ShouldEqual, "GET")
-		So(n.Put.Name, ShouldEqual, "PUT")
-		So(n.Delete.Name, ShouldEqual, "DELETE")
+		c.So(n.Get.Name, ShouldEqual, "GET")
+		c.So(n.Put.Name, ShouldEqual, "PUT")
+		c.So(n.Delete.Name, ShouldEqual, "DELETE")
 
 	})
 }

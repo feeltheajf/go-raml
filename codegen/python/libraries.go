@@ -7,9 +7,9 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 
-	"github.com/Jumpscale/go-raml/codegen/commons"
-	"github.com/Jumpscale/go-raml/codegen/libraries"
-	"github.com/Jumpscale/go-raml/raml"
+	"github.com/feeltheajf/go-raml/codegen/commons"
+	"github.com/feeltheajf/go-raml/codegen/libraries"
+	"github.com/feeltheajf/go-raml/raml"
 )
 
 type library struct {

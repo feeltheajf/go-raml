@@ -5,10 +5,19 @@ from .unmarshall_error import UnmarshallError
 
 
 class TreeService:
+
+    _methods = ("get",)
+
     def __init__(self, client):
         self.client = client
 
-    def get(self, path, headers=None, query_params=None, content_type="application/json"):
+    def get(
+        self,
+        path,
+        headers=None,
+        query_params=None,
+        content_type="application/json",
+    ):
         """
         It is method for GET /api/v1/root/{path:*}
         """
@@ -21,9 +30,10 @@ class TreeService:
             if resp.status_code == 200:
                 return File(resp.json()), resp
 
-            message = 'unknown status code={}'.format(resp.status_code)
-            raise UnhandledAPIError(response=resp, code=resp.status_code,
-                                    message=message)
+            message = "unknown status code={}".format(resp.status_code)
+            raise UnhandledAPIError(
+                response=resp, code=resp.status_code, message=message
+            )
         except ValueError as msg:
             raise UnmarshallError(resp, msg)
         except UnhandledAPIError as uae:

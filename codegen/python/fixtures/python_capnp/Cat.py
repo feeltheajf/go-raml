@@ -3,9 +3,11 @@
 """
 Auto-generated class for Cat
 """
-import capnp
 import os
+
 from six import string_types
+
+import capnp
 
 from . import client_support
 
@@ -18,6 +20,10 @@ class Cat(object):
     """
 
     @staticmethod
+    def _get_schema():
+        return {"kind": {"type": string_types, "required": True}}
+
+    @staticmethod
     def create(**kwargs):
         """
         :type kind: string_types
@@ -28,14 +34,16 @@ class Cat(object):
 
     def __init__(self, json=None, **kwargs):
         if json is None and not kwargs:
-            raise ValueError('No data or kwargs present')
+            raise ValueError("No data or kwargs present")
 
-        class_name = 'Cat'
+        class_name = "Cat"
         data = json or kwargs
 
         # set attributes
         data_types = [string_types]
-        self.kind = client_support.set_property('kind', data, data_types, False, [], False, True, class_name)
+        self.kind = client_support.set_property(
+            "kind", data, data_types, False, [], False, True, class_name
+        )
 
     def __str__(self):
         return self.as_json(indent=4)
@@ -51,7 +59,7 @@ class Cat(object):
         Load the class in capnp schema Cat.capnp
         :rtype bytes
         """
-        template = capnp.load('%s/Cat.capnp' % dir)
+        template = capnp.load("%s/Cat.capnp" % dir)
         return template.Cat.new_message(**self.as_dict()).to_bytes()
 
 
@@ -67,6 +75,10 @@ class CatCollection:
         :type binary: bytes. If none creates an empty capnp object.
         rtype: Cat
         """
-        template = capnp.load('%s/Cat.capnp' % dir)
-        struct = template.Cat.from_bytes(binary) if binary else template.Cat.new_message()
+        template = capnp.load("%s/Cat.capnp" % dir)
+        struct = (
+            template.Cat.from_bytes(binary)
+            if binary
+            else template.Cat.new_message()
+        )
         return Cat(**struct.to_dict(verbose=True))

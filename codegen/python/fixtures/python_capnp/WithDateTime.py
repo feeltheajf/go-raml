@@ -3,10 +3,12 @@
 """
 Auto-generated class for WithDateTime
 """
-import capnp
 import os
 from datetime import datetime
+
 from six import string_types
+
+import capnp
 
 from . import client_support
 
@@ -17,6 +19,13 @@ class WithDateTime(object):
     """
     auto-generated. don't touch.
     """
+
+    @staticmethod
+    def _get_schema():
+        return {
+            "birth": {"type": datetime, "required": True},
+            "name": {"type": string_types, "required": True},
+        }
 
     @staticmethod
     def create(**kwargs):
@@ -30,16 +39,20 @@ class WithDateTime(object):
 
     def __init__(self, json=None, **kwargs):
         if json is None and not kwargs:
-            raise ValueError('No data or kwargs present')
+            raise ValueError("No data or kwargs present")
 
-        class_name = 'WithDateTime'
+        class_name = "WithDateTime"
         data = json or kwargs
 
         # set attributes
         data_types = [datetime]
-        self.birth = client_support.set_property('birth', data, data_types, False, [], False, True, class_name)
+        self.birth = client_support.set_property(
+            "birth", data, data_types, False, [], False, True, class_name
+        )
         data_types = [string_types]
-        self.name = client_support.set_property('name', data, data_types, False, [], False, True, class_name)
+        self.name = client_support.set_property(
+            "name", data, data_types, False, [], False, True, class_name
+        )
 
     def __str__(self):
         return self.as_json(indent=4)
@@ -55,7 +68,7 @@ class WithDateTime(object):
         Load the class in capnp schema WithDateTime.capnp
         :rtype bytes
         """
-        template = capnp.load('%s/WithDateTime.capnp' % dir)
+        template = capnp.load("%s/WithDateTime.capnp" % dir)
         return template.WithDateTime.new_message(**self.as_dict()).to_bytes()
 
 
@@ -71,6 +84,10 @@ class WithDateTimeCollection:
         :type binary: bytes. If none creates an empty capnp object.
         rtype: WithDateTime
         """
-        template = capnp.load('%s/WithDateTime.capnp' % dir)
-        struct = template.WithDateTime.from_bytes(binary) if binary else template.WithDateTime.new_message()
+        template = capnp.load("%s/WithDateTime.capnp" % dir)
+        struct = (
+            template.WithDateTime.from_bytes(binary)
+            if binary
+            else template.WithDateTime.new_message()
+        )
         return WithDateTime(**struct.to_dict(verbose=True))

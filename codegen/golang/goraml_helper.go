@@ -5,7 +5,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 
-	"github.com/Jumpscale/go-raml/codegen/commons"
+	"github.com/feeltheajf/go-raml/codegen/commons"
 )
 
 var (

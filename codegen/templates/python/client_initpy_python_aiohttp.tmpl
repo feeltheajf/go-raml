@@ -12,6 +12,11 @@ from .http_client import HTTPClient
 
 
 class Client:
+
+    _services = (
+        {{ range $k, $v := .Services }}"{{$v.EndpointName}}",{{end}}
+    )
+
     def __init__(self,loop, base_uri="{{.BaseURI}}"):
         http_client = HTTPClient(loop, base_uri)
         {{- if .Securities}}

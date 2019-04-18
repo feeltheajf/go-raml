@@ -7,7 +7,7 @@ import (
 )
 
 func TestInflection(t *testing.T) {
-	Convey("Singularize", t, func() {
+	Convey("Singularize", t, func(c C) {
 		var tests = []struct {
 			Word   string
 			Result string
@@ -19,11 +19,11 @@ func TestInflection(t *testing.T) {
 		}
 
 		for _, test := range tests {
-			So(singularize(test.Word), ShouldEqual, test.Result)
+			c.So(singularize(test.Word), ShouldEqual, test.Result)
 		}
 	})
 
-	Convey("pluralize", t, func() {
+	Convey("pluralize", t, func(c C) {
 		var tests = []struct {
 			Word   string
 			Result string
@@ -35,11 +35,11 @@ func TestInflection(t *testing.T) {
 		}
 
 		for _, test := range tests {
-			So(pluralize(test.Word), ShouldEqual, test.Result)
+			c.So(pluralize(test.Word), ShouldEqual, test.Result)
 		}
 	})
 
-	Convey("Lower Camel Case", t, func() {
+	Convey("Lower Camel Case", t, func(c C) {
 		var tests = []struct {
 			Word   string
 			Result string
@@ -51,11 +51,11 @@ func TestInflection(t *testing.T) {
 		}
 
 		for _, test := range tests {
-			So(lowerCamelCase(test.Word), ShouldEqual, test.Result)
+			c.So(lowerCamelCase(test.Word), ShouldEqual, test.Result)
 		}
 	})
 
-	Convey("Upper Camel Case", t, func() {
+	Convey("Upper Camel Case", t, func(c C) {
 		var tests = []struct {
 			Word   string
 			Result string
@@ -67,11 +67,11 @@ func TestInflection(t *testing.T) {
 		}
 
 		for _, test := range tests {
-			So(upperCamelCase(test.Word), ShouldEqual, test.Result)
+			c.So(upperCamelCase(test.Word), ShouldEqual, test.Result)
 		}
 	})
 
-	Convey("lower underscore case", t, func() {
+	Convey("lower underscore case", t, func(c C) {
 		var tests = []struct {
 			Word   string
 			Result string
@@ -83,11 +83,11 @@ func TestInflection(t *testing.T) {
 		}
 
 		for _, test := range tests {
-			So(lowerUnderScoreCase(test.Word), ShouldEqual, test.Result)
+			c.So(lowerUnderScoreCase(test.Word), ShouldEqual, test.Result)
 		}
 	})
 
-	Convey("upper underscore case", t, func() {
+	Convey("upper underscore case", t, func(c C) {
 		var tests = []struct {
 			Word   string
 			Result string
@@ -99,11 +99,11 @@ func TestInflection(t *testing.T) {
 		}
 
 		for _, test := range tests {
-			So(upperUnderScoreCase(test.Word), ShouldEqual, test.Result)
+			c.So(upperUnderScoreCase(test.Word), ShouldEqual, test.Result)
 		}
 	})
 
-	Convey("lower hyphen case", t, func() {
+	Convey("lower hyphen case", t, func(c C) {
 		var tests = []struct {
 			Word   string
 			Result string
@@ -115,11 +115,11 @@ func TestInflection(t *testing.T) {
 		}
 
 		for _, test := range tests {
-			So(lowerHyphenCase(test.Word), ShouldEqual, test.Result)
+			c.So(lowerHyphenCase(test.Word), ShouldEqual, test.Result)
 		}
 	})
 
-	Convey("upper hypen case", t, func() {
+	Convey("upper hypen case", t, func(c C) {
 		var tests = []struct {
 			Word   string
 			Result string
@@ -131,7 +131,7 @@ func TestInflection(t *testing.T) {
 		}
 
 		for _, test := range tests {
-			So(upperHyphenCase(test.Word), ShouldEqual, test.Result)
+			c.So(upperHyphenCase(test.Word), ShouldEqual, test.Result)
 		}
 	})
 

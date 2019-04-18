@@ -14,8 +14,8 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 
-	"github.com/Jumpscale/go-raml/codegen/templates"
-	"github.com/Jumpscale/go-raml/raml"
+	"github.com/feeltheajf/go-raml/codegen/templates"
+	"github.com/feeltheajf/go-raml/raml"
 )
 
 var (
@@ -77,7 +77,7 @@ func ParseDescription(desc string) []string {
 // if file already exist and override==false, file won't be regenerated
 // funcMap = this parameter is used for passing go function to the template
 func GenerateFile(data interface{}, tmplFile, tmplName, filename string, override bool) error {
-	if !override && isFileExist(filename) {
+	if !override && isFileExist(filename) && os.Getenv("GORAML_AUTOTEST") != "TRUE" {
 		log.Infof("file %v already exist and override=false, no need to regenerate", filename)
 		return nil
 	}
@@ -110,7 +110,9 @@ func GenerateFile(data interface{}, tmplFile, tmplName, filename string, overrid
 	}
 	defer f.Close()
 
-	log.Infof("generating file %v", filename)
+	if os.Getenv("GORAML_AUTOTEST") != "TRUE" {
+		log.Infof("generating file %v", filename)
+	}
 	if err := t.ExecuteTemplate(f, tmplName, data); err != nil {
 		return err
 	}
@@ -119,7 +121,7 @@ func GenerateFile(data interface{}, tmplFile, tmplName, filename string, overrid
 	case strings.HasSuffix(filename, ".go"):
 		return runGoFmt(filename)
 	case strings.HasSuffix(filename, ".py"):
-		return runAutoPep8(filename)
+		return runBlack(filename)
 	}
 	return nil
 }
@@ -180,19 +182,26 @@ func runGoFmt(filePath string) error {
 	return nil
 }
 
-func runAutoPep8(filename string) error {
+func runBlack(filename string) error {
+	// run iSort to remove duplicate imports
 	args := []string{
-		"-a",
-		"-a",
-		"--in-place",
-		"--max-line-length",
-		"120",
 		filename,
 	}
-	if out, err := exec.Command("autopep8", args...).CombinedOutput(); err != nil {
-		log.Errorf("Error running autopep8 on '%s' failed:\n%s",
+	if out, err := exec.Command("isort", args...).CombinedOutput(); err != nil {
+		log.Errorf("Error running isort on '%s' failed:\n%s",
 			filename, string(out))
-		return errors.New("autopep8 failed: make sure you have it installed")
+		return errors.New("isort failed: make sure you have it installed")
+	}
+	// run Black
+	args = []string{
+		"-l",
+		"79",
+		filename,
+	}
+	if out, err := exec.Command("black", args...).CombinedOutput(); err != nil {
+		log.Errorf("Error running black on '%s' failed:\n%s",
+			filename, string(out))
+		return errors.New("black failed: make sure you have it installed")
 	}
 	return nil
 }
@@ -303,12 +312,7 @@ func _snakeCaseResourceURI(r *raml.Resource, completeURI string) string {
 			if r.Parent != nil { // not root resource, need to add "_"
 				snake = "_"
 			}
-
-			if strings.HasPrefix(r.URI, "/{") {
-				snake += "by" + strings.ToUpper(uri[:1])
-			} else {
-				snake += strings.ToLower(uri[:1])
-			}
+			snake += strings.ToLower(uri[:1])
 
 			if len(uri) > 1 { // append with the rest of uri
 				snake += uri[1:]

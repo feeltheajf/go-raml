@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Jumpscale/go-raml/codegen/commons"
+	"github.com/feeltheajf/go-raml/codegen/commons"
 )
 
 type sanicRouteView struct {

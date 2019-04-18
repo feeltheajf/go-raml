@@ -6,25 +6,25 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Jumpscale/go-raml/raml"
-	"github.com/Jumpscale/go-raml/utils"
+	"github.com/feeltheajf/go-raml/raml"
+	"github.com/feeltheajf/go-raml/utils"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestResource(t *testing.T) {
-	Convey("resource generator", t, func() {
+	Convey("resource generator", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		apiDef := new(raml.APIDefinition)
 
-		Convey("interface of simple resource", func() {
+		Convey("interface of simple resource", t, func(c C) {
 			err := raml.ParseFile("../fixtures/server_resources/deliveries.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			gs := NewServer(apiDef, "main", "apidocs", "examples.com/libro", true, targetDir, nil)
 			_, err = gs.generateServerResources(targetDir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/server_resources/simple"
 			files := []string{
@@ -32,23 +32,23 @@ func TestResource(t *testing.T) {
 			}
 			for _, f := range files {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, f+".go"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f+".txt"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Convey("simple resource with one api file per method", func() {
+		Convey("simple resource with one api file per method", t, func(c C) {
 			err := raml.ParseFile("../fixtures/server_resources/deliveries.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			gs := NewServer(apiDef, "main", "apidocs", "examples.com/libro", true, targetDir, nil)
 			_, err = gs.generateServerResources(targetDir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/server_resources/one_file_per_method_simple"
 			files := []string{
@@ -61,23 +61,23 @@ func TestResource(t *testing.T) {
 			}
 			for _, f := range files {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, serverAPIDir, "deliveries", f+".go"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f+".txt"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Convey("big raml to check interface consistency", func() {
+		Convey("big raml to check interface consistency", t, func(c C) {
 			err := raml.ParseFile("../fixtures/server_resources/grid/api.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			gs := NewServer(apiDef, "main", "apidocs", "examples.com/libro", true, targetDir, nil)
 			_, err = gs.generateServerResources(targetDir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/server_resources/grid/"
 			files := []string{
@@ -85,22 +85,22 @@ func TestResource(t *testing.T) {
 			}
 			for _, f := range files {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, f+".go"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f+".txt"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 		})
 
-		Convey("resource with request body", func() {
+		Convey("resource with request body", t, func(c C) {
 			err := raml.ParseFile("../fixtures/server_resources/usergroups.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			gs := NewServer(apiDef, "main", "apidocs", "examples.com/libro", true, targetDir, nil)
 			_, err = gs.generateServerResources(targetDir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/server_resources/with_req_body"
 			files := []string{
@@ -109,16 +109,16 @@ func TestResource(t *testing.T) {
 			}
 			for _, f := range files {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, serverAPIDir, "users", f+".go"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f+".txt"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})

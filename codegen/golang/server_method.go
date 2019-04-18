@@ -3,10 +3,10 @@ package golang
 import (
 	"strings"
 
-	"github.com/Jumpscale/go-raml/codegen/commons"
-	"github.com/Jumpscale/go-raml/codegen/resource"
-	"github.com/Jumpscale/go-raml/codegen/security"
-	"github.com/Jumpscale/go-raml/raml"
+	"github.com/feeltheajf/go-raml/codegen/commons"
+	"github.com/feeltheajf/go-raml/codegen/resource"
+	"github.com/feeltheajf/go-raml/codegen/security"
+	"github.com/feeltheajf/go-raml/raml"
 )
 
 const (

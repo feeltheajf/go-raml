@@ -8,18 +8,18 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	"github.com/Jumpscale/go-raml/raml"
-	"github.com/Jumpscale/go-raml/utils"
+	"github.com/feeltheajf/go-raml/raml"
+	"github.com/feeltheajf/go-raml/utils"
 )
 
 func TestServer(t *testing.T) {
-	Convey("server generator", t, func() {
+	Convey("server generator", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		apiDef := new(raml.APIDefinition)
 		err = raml.ParseFile("../fixtures/congo/api.raml", apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 		rootFixture := "../fixtures/congo/python_server"
 		files := []string{
 			"drones_api.py",
@@ -29,55 +29,55 @@ func TestServer(t *testing.T) {
 			"handlers/drones_postHandler.py",
 		}
 
-		Convey("Congo python server", func() {
+		Convey("Congo python server", t, func(c C) {
 			server := NewFlaskServer(apiDef, "apidocs", targetDir, true, nil, false)
 			err = server.Generate()
-			So(err, ShouldBeNil)
-			validateFiles(files, targetDir, rootFixture)
+			c.So(err, ShouldBeNil)
+			validateFiles(c, files, targetDir, rootFixture)
 			// test that this file exist
 			filesExist := []string{
 				"types/User.py",
 				"types/client_support.py",
 				"handlers/deliveries_getHandler.py",
 				"handlers/deliveries_postHandler.py",
-				"handlers/deliveries_byDeliveryId_getHandler.py",
-				"handlers/deliveries_byDeliveryId_patchHandler.py",
-				"handlers/deliveries_byDeliveryId_deleteHandler.py",
+				"handlers/deliveries_deliveryId_getHandler.py",
+				"handlers/deliveries_deliveryId_patchHandler.py",
+				"handlers/deliveries_deliveryId_deleteHandler.py",
 				"handlers/drones_getHandler.py",
 				"handlers/drones_postHandler.py",
-				"handlers/drones_byDroneId_getHandler.py",
-				"handlers/drones_byDroneId_patchHandler.py",
-				"handlers/drones_byDroneId_deleteHandler.py",
-				"handlers/drones_byDroneId_deliveries_getHandler.py",
+				"handlers/drones_droneId_getHandler.py",
+				"handlers/drones_droneId_patchHandler.py",
+				"handlers/drones_droneId_deleteHandler.py",
+				"handlers/drones_droneId_deliveries_getHandler.py",
 			}
 			for _, f := range filesExist {
 				_, err := os.Stat(filepath.Join(targetDir, f))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 			}
 		})
 
-		Convey("Congo gevent python server", func() {
+		Convey("Congo gevent python server", t, func(c C) {
 			files = append(files, "server.py")
 			server := NewFlaskServer(apiDef, "apidocs", targetDir, true, nil, true)
 			err = server.Generate()
-			So(err, ShouldBeNil)
-			validateFiles(files, targetDir, rootFixture)
+			c.So(err, ShouldBeNil)
+			validateFiles(c, files, targetDir, rootFixture)
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
 }
 
-func validateFiles(files []string, targetDir string, rootFixture string) {
+func validateFiles(c C, files []string, targetDir string, rootFixture string) {
 	for _, f := range files {
 		s, err := utils.TestLoadFile(filepath.Join(targetDir, f))
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f))
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		So(s, ShouldEqual, tmpl)
+		c.So(s, ShouldEqual, tmpl)
 	}
 }

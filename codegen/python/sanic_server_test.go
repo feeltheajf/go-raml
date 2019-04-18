@@ -8,23 +8,23 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	"github.com/Jumpscale/go-raml/raml"
-	"github.com/Jumpscale/go-raml/utils"
+	"github.com/feeltheajf/go-raml/raml"
+	"github.com/feeltheajf/go-raml/utils"
 )
 
 func TestSanicServer(t *testing.T) {
-	Convey("sanic server generator", t, func() {
+	Convey("sanic server generator", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("Hello world server", func() {
+		Convey("Hello world server", t, func(c C) {
 			apiDef := new(raml.APIDefinition)
 			err = raml.ParseFile("../fixtures/raml-examples/helloworld/helloworld.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			server := NewSanicServer(apiDef, "apidocs", targetDir, true, nil)
 			err = server.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			// check drones API implementation
 			rootFixture := "./fixtures/sanic/raml-examples/helloworld"
@@ -39,24 +39,24 @@ func TestSanicServer(t *testing.T) {
 
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Convey("Congo", func() {
+		Convey("Congo", t, func(c C) {
 			apiDef := new(raml.APIDefinition)
 			err = raml.ParseFile("../fixtures/congo/api.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			server := NewSanicServer(apiDef, "apidocs", targetDir, true, nil)
 			err = server.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			// check drones API implementation
 			rootFixture := "./fixtures/sanic/server/congo"
@@ -73,12 +73,12 @@ func TestSanicServer(t *testing.T) {
 
 			for _, filename := range files {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, filename))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, filename))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 			// test that this file exist
@@ -87,24 +87,24 @@ func TestSanicServer(t *testing.T) {
 				"types/client_support.py",
 				"handlers/deliveries_getHandler.py",
 				"handlers/deliveries_postHandler.py",
-				"handlers/deliveries_byDeliveryId_getHandler.py",
-				"handlers/deliveries_byDeliveryId_patchHandler.py",
-				"handlers/deliveries_byDeliveryId_deleteHandler.py",
+				"handlers/deliveries_deliveryId_getHandler.py",
+				"handlers/deliveries_deliveryId_patchHandler.py",
+				"handlers/deliveries_deliveryId_deleteHandler.py",
 				"handlers/drones_getHandler.py",
 				"handlers/drones_postHandler.py",
-				"handlers/drones_byDroneId_getHandler.py",
-				"handlers/drones_byDroneId_patchHandler.py",
-				"handlers/drones_byDroneId_deleteHandler.py",
-				"handlers/drones_byDroneId_deliveries_getHandler.py",
+				"handlers/drones_droneId_getHandler.py",
+				"handlers/drones_droneId_patchHandler.py",
+				"handlers/drones_droneId_deleteHandler.py",
+				"handlers/drones_droneId_deliveries_getHandler.py",
 			}
 			for _, f := range files {
 				_, err := os.Stat(filepath.Join(targetDir, f))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 			}
 
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})

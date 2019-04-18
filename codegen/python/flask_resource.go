@@ -3,7 +3,7 @@ package python
 import (
 	"path/filepath"
 	"strings"
-	//"github.com/Jumpscale/go-raml/codegen/resource"
+	//"github.com/feeltheajf/go-raml/codegen/resource"
 )
 
 func (fs FlaskServer) generateResources(dir string) error {

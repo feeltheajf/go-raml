@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Jumpscale/go-raml/commands"
+	"github.com/feeltheajf/go-raml/commands"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
@@ -20,6 +20,7 @@ var (
 )
 
 var (
+	parseCommand       = &commands.ParseCommand{}
 	serverCommand      = &commands.ServerCommand{}
 	clientCommand      = &commands.ClientCommand{}
 	capnpCommand       = &commands.CapnpCommand{}
@@ -56,6 +57,64 @@ func main() {
 		return nil
 	}
 	app.Commands = []cli.Command{
+		{
+			Name:  "parse",
+			Usage: "Parse RAML specification",
+
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:        "language, l",
+					Value:       "go",
+					Usage:       "Language to construct a client for",
+					Destination: &parseCommand.Language,
+				},
+				cli.StringFlag{
+					Name:        "dir",
+					Value:       ".",
+					Usage:       "target directory",
+					Destination: &parseCommand.Dir,
+				},
+				cli.StringFlag{
+					Name:        "ramlfile",
+					Value:       ".",
+					Usage:       "Source raml file",
+					Destination: &parseCommand.RamlFile,
+				},
+				cli.StringFlag{
+					Name:        "package",
+					Value:       "client",
+					Usage:       "package name",
+					Destination: &parseCommand.PackageName,
+				},
+				cli.StringFlag{
+					Name:        "import-path",
+					Value:       "",
+					Usage:       "golang import path of the generated code",
+					Destination: &parseCommand.ImportPath,
+				},
+				cli.StringFlag{
+					Name:        "kind",
+					Value:       "requests",
+					Usage:       "Kind of python client to generate (requests,aiohttp)",
+					Destination: &parseCommand.Kind,
+				},
+				cli.StringFlag{
+					Name:        "lib-root-urls",
+					Usage:       "Array of libraries root URLs",
+					Destination: &parseCommand.LibRootURLs,
+				},
+				cli.BoolFlag{
+					Name:        "python-unmarshall-response",
+					Usage:       "set to true for python client to unmarshall the response into python class",
+					Destination: &parseCommand.PythonUnmarshallResponse,
+				},
+			},
+			Action: func(c *cli.Context) {
+				if err := parseCommand.Execute(); err != nil {
+					log.Error(err)
+				}
+			},
+		},
 		{
 			Name:  "server",
 			Usage: "Generate a server according to a RAML specification",
@@ -269,13 +328,6 @@ func main() {
 				if err := capnpCommand.Execute(); err != nil {
 					log.Error(err)
 				}
-			},
-		}, {
-			Name:  "spec",
-			Usage: "Generate a RAML specification from a go server",
-			Action: func(c *cli.Context) {
-				err := errors.New("Not implemented, check the roadmap")
-				log.Error(err)
 			},
 		},
 	}

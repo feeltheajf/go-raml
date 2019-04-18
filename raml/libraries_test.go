@@ -7,51 +7,51 @@ import (
 )
 
 func TestLibraries(t *testing.T) {
-	Convey("Libraries", t, func() {
+	Convey("Libraries", t, func(c C) {
 		apiDef := new(APIDefinition)
 		err := ParseFile("./samples/simple_with_lib.raml", apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("two level library", func() {
+		Convey("two level library", t, func(c C) {
 			// check Uses
-			So(apiDef.Uses, ShouldContainKey, "files")
-			So(apiDef.Uses["files"], ShouldEqual, "libraries/files.raml")
+			c.So(apiDef.Uses, ShouldContainKey, "files")
+			c.So(apiDef.Uses["files"], ShouldEqual, "libraries/files.raml")
 
 			// Check Libraries property
-			So(apiDef.Libraries, ShouldContainKey, "files")
+			c.So(apiDef.Libraries, ShouldContainKey, "files")
 
 			// first level
 			files := apiDef.Libraries["files"]
-			So(files.Usage, ShouldEqual, "Use to define some basic file-related constructs.")
-			So(files.Traits, ShouldContainKey, "drm")
-			So(files.Uses, ShouldContainKey, "file-type")
-			So(files.ResourceTypes, ShouldContainKey, "file")
+			c.So(files.Usage, ShouldEqual, "Use to define some basic file-related constructs.")
+			c.So(files.Traits, ShouldContainKey, "drm")
+			c.So(files.Uses, ShouldContainKey, "file-type")
+			c.So(files.ResourceTypes, ShouldContainKey, "file")
 
 			// check trait usage in a resource type
 			file := files.ResourceTypes["file"]
-			So(file.Get, ShouldNotBeNil)
-			So(file.Get.Headers, ShouldContainKey, HTTPHeader("drm-key"))
+			c.So(file.Get, ShouldNotBeNil)
+			c.So(file.Get.Headers, ShouldContainKey, HTTPHeader("drm-key"))
 
 			// second level
-			So(files.Libraries, ShouldContainKey, "file-type")
+			c.So(files.Libraries, ShouldContainKey, "file-type")
 			fileType := files.Libraries["file-type"]
-			So(fileType.Types, ShouldContainKey, "File")
+			c.So(fileType.Types, ShouldContainKey, "File")
 			File := fileType.Types["File"]
-			So(len(File.Properties), ShouldEqual, 2)
+			c.So(len(File.Properties), ShouldEqual, 2)
 		})
 
-		Convey("using library's trait in root's definition", func() {
+		Convey("using library's trait in root's definition", t, func(c C) {
 			files := apiDef.Resources["/files"]
-			So(files.Get, ShouldNotBeNil)
-			So(files.Get.Headers, ShouldContainKey, HTTPHeader("drm-key"))
-			So(files.Get.Headers["drm-key"].Required, ShouldBeFalse)
+			c.So(files.Get, ShouldNotBeNil)
+			c.So(files.Get.Headers, ShouldContainKey, HTTPHeader("drm-key"))
+			c.So(files.Get.Headers["drm-key"].Required, ShouldBeFalse)
 		})
 
-		Convey("proper variable name", func() {
+		Convey("proper variable name", t, func(c C) {
 			r := apiDef.Resources["/links"]
 
-			So(r.Post, ShouldNotBeNil)
-			So(r.Post.Bodies.Type, ShouldEqual, "files.Link")
+			c.So(r.Post, ShouldNotBeNil)
+			c.So(r.Post.Bodies.Type, ShouldEqual, "files.Link")
 		})
 
 	})

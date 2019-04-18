@@ -6,25 +6,25 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Jumpscale/go-raml/codegen/resource"
-	"github.com/Jumpscale/go-raml/raml"
-	"github.com/Jumpscale/go-raml/utils"
+	"github.com/feeltheajf/go-raml/codegen/resource"
+	"github.com/feeltheajf/go-raml/raml"
+	"github.com/feeltheajf/go-raml/utils"
 
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestServerMethodWithSpecialChars(t *testing.T) {
-	Convey("TestServerMethodWithSpecialChars", t, func() {
+	Convey("TestServerMethodWithSpecialChars", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		apiDef := new(raml.APIDefinition)
 		err = raml.ParseFile("../fixtures/special_chars.raml", apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		gs := NewServer(apiDef, "main", "apidocs", "examples.com/libro", true, targetDir, nil)
 		_, err = gs.generateServerResources(targetDir)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "./fixtures/method/special_chars/server"
 		files := []string{
@@ -35,15 +35,15 @@ func TestServerMethodWithSpecialChars(t *testing.T) {
 
 		for _, f := range files {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, f+".go"))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f+".txt"))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
@@ -51,28 +51,28 @@ func TestServerMethodWithSpecialChars(t *testing.T) {
 }
 
 func TestCatchAllRoute(t *testing.T) {
-	Convey("TestServerMethodWithSpecialChars", t, func() {
+	Convey("TestServerMethodWithSpecialChars", t, func(c C) {
 		sm := serverMethod{
 			method: &method{},
 		}
 		sm.Endpoint = "/users/" + resource.CatchAllRoute
 
-		So(sm.Route(), ShouldEqual, "/users/"+muxCatchAllRoute)
+		c.So(sm.Route(), ShouldEqual, "/users/"+muxCatchAllRoute)
 	})
 }
 
 func TestServerMethodWithCatchAllRoute(t *testing.T) {
-	Convey("TestServerMethodWithCatchAllRoute", t, func() {
+	Convey("TestServerMethodWithCatchAllRoute", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		apiDef := new(raml.APIDefinition)
 		err = raml.ParseFile("../fixtures/catch_all_recursive_url.raml", apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		gs := NewServer(apiDef, "main", "apidocs", "examples.com/libro", true, targetDir, nil)
 		_, err = gs.generateServerResources(targetDir)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "./fixtures/method/catch_all_recursive_url/server"
 		files := []string{
@@ -81,15 +81,15 @@ func TestServerMethodWithCatchAllRoute(t *testing.T) {
 
 		for _, f := range files {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, f+".go"))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f+".txt"))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
@@ -97,17 +97,17 @@ func TestServerMethodWithCatchAllRoute(t *testing.T) {
 }
 
 func TestServerMethodWithCatchAllRouteInRoot(t *testing.T) {
-	Convey("TestServerMethodWithCatchAllRouteInRoot", t, func() {
+	Convey("TestServerMethodWithCatchAllRouteInRoot", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		apiDef := new(raml.APIDefinition)
 		err = raml.ParseFile("../fixtures/catch_all_recursive_in_root.raml", apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		gs := NewServer(apiDef, "main", "apidocs", "examples.com/libro", true, targetDir, nil)
 		err = gs.Generate()
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "./fixtures/method/catch_all_recursive_url/server-in-root"
 		files := []string{
@@ -117,15 +117,15 @@ func TestServerMethodWithCatchAllRouteInRoot(t *testing.T) {
 
 		for _, f := range files {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, f+".go"))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f+".txt"))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})

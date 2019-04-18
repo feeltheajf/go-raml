@@ -15,6 +15,11 @@ from .{{$v.ModuleName}} import {{$v.ClassName}}{{end}}
 from .http_client import HTTPClient
 
 class Client:
+
+    _services = (
+        {{ range $k, $v := .Services }}"{{$v.EndpointName}}",{{end}}
+    )
+
     def __init__(self, base_uri="{{.BaseURI}}"):
         http_client = HTTPClient(base_uri)
         {{- if .Securities}}

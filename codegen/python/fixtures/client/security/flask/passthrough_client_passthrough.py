@@ -7,4 +7,4 @@ class PassThroughClientPassthrough:
 
     def set_authorization_header(self, val):
         """" Set header Authorization to '<val>'"""
-        self._http_client.set_header('Authorization', val)
+        self._http_client.set_header("Authorization", val)

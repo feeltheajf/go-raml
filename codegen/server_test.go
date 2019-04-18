@@ -1,20 +1,21 @@
 package codegen
 
 import (
-	"github.com/Jumpscale/go-raml/utils"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
 
+	"github.com/feeltheajf/go-raml/utils"
+
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestServer(t *testing.T) {
-	Convey("server generator", t, func() {
+	Convey("server generator", t, func(c C) {
 		targetdir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
-		Convey("simple Go server", func() {
+		c.So(err, ShouldBeNil)
+		Convey("simple Go server", t, func(c C) {
 			s := Server{
 				RAMLFile:       "./fixtures/server/user_api/api.raml",
 				Kind:           "",
@@ -26,7 +27,7 @@ func TestServer(t *testing.T) {
 				WithMain:       true,
 			}
 			err := s.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/server/user_api/"
 			checks := []struct {
@@ -49,17 +50,17 @@ func TestServer(t *testing.T) {
 			}
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetdir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetdir)
 		})
 	})

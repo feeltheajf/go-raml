@@ -5,10 +5,24 @@ from .unmarshall_error import UnmarshallError
 
 
 class ArraysService:
+
+    _methods = ("arrays_post", "arrays_put")
+
     def __init__(self, client):
         self.client = client
 
-    def arrays_post(self, data, headers=None, query_params=None, content_type="application/json"):
+    @property
+    def _arrays_post_data_types(self):
+        """It is data schema for POST /arrays"""
+        return (Animal,)
+
+    def arrays_post(
+        self,
+        data,
+        headers=None,
+        query_params=None,
+        content_type="application/json",
+    ):
         """
         handle array
         It is method for POST /arrays
@@ -25,9 +39,10 @@ class ArraysService:
                     resps.append(Animal(elem))
                 return resps, resp
 
-            message = 'unknown status code={}'.format(resp.status_code)
-            raise UnhandledAPIError(response=resp, code=resp.status_code,
-                                    message=message)
+            message = "unknown status code={}".format(resp.status_code)
+            raise UnhandledAPIError(
+                response=resp, code=resp.status_code, message=message
+            )
         except ValueError as msg:
             raise UnmarshallError(resp, msg)
         except UnhandledAPIError as uae:
@@ -35,7 +50,18 @@ class ArraysService:
         except Exception as e:
             raise UnmarshallError(resp, e.message)
 
-    def arrays_put(self, data, headers=None, query_params=None, content_type="application/json"):
+    @property
+    def _arrays_put_data_types(self):
+        """It is data schema for PUT /arrays"""
+        return (Animal,)
+
+    def arrays_put(
+        self,
+        data,
+        headers=None,
+        query_params=None,
+        content_type="application/json",
+    ):
         """
         another form of array
         It is method for PUT /arrays
@@ -52,9 +78,10 @@ class ArraysService:
                     resps.append(Animal(elem))
                 return resps, resp
 
-            message = 'unknown status code={}'.format(resp.status_code)
-            raise UnhandledAPIError(response=resp, code=resp.status_code,
-                                    message=message)
+            message = "unknown status code={}".format(resp.status_code)
+            raise UnhandledAPIError(
+                response=resp, code=resp.status_code, message=message
+            )
         except ValueError as msg:
             raise UnmarshallError(resp, msg)
         except UnhandledAPIError as uae:

@@ -14,6 +14,15 @@ class UsersPostReqBody(object):
     """
 
     @staticmethod
+    def _get_schema():
+        return {
+            "ID": {"type": string_types, "required": True},
+            "age": {"type": int, "required": True},
+            "grades": {"type": [int], "required": True},
+            "item": {"type": string_types, "required": True},
+        }
+
+    @staticmethod
     def create(**kwargs):
         """
         :type ID: string_types
@@ -27,20 +36,28 @@ class UsersPostReqBody(object):
 
     def __init__(self, json=None, **kwargs):
         if json is None and not kwargs:
-            raise ValueError('No data or kwargs present')
+            raise ValueError("No data or kwargs present")
 
-        class_name = 'UsersPostReqBody'
+        class_name = "UsersPostReqBody"
         data = json or kwargs
 
         # set attributes
         data_types = [string_types]
-        self.ID = client_support.set_property('ID', data, data_types, False, [], False, True, class_name)
+        self.ID = client_support.set_property(
+            "ID", data, data_types, False, [], False, True, class_name
+        )
         data_types = [int]
-        self.age = client_support.set_property('age', data, data_types, False, [], False, True, class_name)
+        self.age = client_support.set_property(
+            "age", data, data_types, False, [], False, True, class_name
+        )
         data_types = [int]
-        self.grades = client_support.set_property('grades', data, data_types, False, [], True, True, class_name)
+        self.grades = client_support.set_property(
+            "grades", data, data_types, False, [], True, True, class_name
+        )
         data_types = [string_types]
-        self.item = client_support.set_property('item', data, data_types, False, [], False, True, class_name)
+        self.item = client_support.set_property(
+            "item", data, data_types, False, [], False, True, class_name
+        )
 
     def __str__(self):
         return self.as_json(indent=4)

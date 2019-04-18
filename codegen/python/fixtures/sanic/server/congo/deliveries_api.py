@@ -19,25 +19,25 @@ async def deliveries_post(request):
     return handlers.deliveries_postHandler(request)
 
 
-async def deliveries_byDeliveryId_get(request, deliveryId):
+async def deliveries_deliveryId_get(request, deliveryId):
     """
     Get information on a specific delivery
     It is handler for GET /deliveries/<deliveryId>
     """
-    return handlers.deliveries_byDeliveryId_getHandler(request, deliveryId)
+    return handlers.deliveries_deliveryId_getHandler(request, deliveryId)
 
 
-async def deliveries_byDeliveryId_patch(request, deliveryId):
+async def deliveries_deliveryId_patch(request, deliveryId):
     """
     Update the information on a specific delivery
     It is handler for PATCH /deliveries/<deliveryId>
     """
-    return handlers.deliveries_byDeliveryId_patchHandler(request, deliveryId)
+    return handlers.deliveries_deliveryId_patchHandler(request, deliveryId)
 
 
-async def deliveries_byDeliveryId_delete(request, deliveryId):
+async def deliveries_deliveryId_delete(request, deliveryId):
     """
     Cancel a specific delivery
     It is handler for DELETE /deliveries/<deliveryId>
     """
-    return handlers.deliveries_byDeliveryId_deleteHandler(request, deliveryId)
+    return handlers.deliveries_deliveryId_deleteHandler(request, deliveryId)

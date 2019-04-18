@@ -6,24 +6,24 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Jumpscale/go-raml/raml"
-	"github.com/Jumpscale/go-raml/utils"
+	"github.com/feeltheajf/go-raml/raml"
+	"github.com/feeltheajf/go-raml/utils"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestGenerateObjectFromRaml(t *testing.T) {
-	Convey("generate object", t, func() {
+	Convey("generate object", t, func(c C) {
 		var apiDef raml.APIDefinition
 
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("From raml", func() {
+		Convey("From raml", t, func(c C) {
 			err = raml.ParseFile("../fixtures/struct/struct.raml", &apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			err = generateAllObjects(&apiDef, targetDir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/object/"
 			checks := []struct {
@@ -47,22 +47,22 @@ func TestGenerateObjectFromRaml(t *testing.T) {
 
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Convey("From raml with JSON", func() {
+		Convey("From raml with JSON", t, func(c C) {
 			err = raml.ParseFile("../fixtures/struct/json/api.raml", &apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			err = generateAllObjects(&apiDef, targetDir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/object/json"
 			checks := []struct {
@@ -74,33 +74,33 @@ func TestGenerateObjectFromRaml(t *testing.T) {
 
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
 }
 func TestGenerateObjectMethodBody(t *testing.T) {
-	Convey("generate object from method body", t, func() {
+	Convey("generate object from method body", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("From raml", func() {
+		Convey("From raml", t, func(c C) {
 			var apiDef raml.APIDefinition
 			err := raml.ParseFile("../fixtures/struct/struct.raml", &apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			err = generateAllObjects(&apiDef, targetDir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/object/"
 			checks := []struct {
@@ -113,23 +113,23 @@ func TestGenerateObjectMethodBody(t *testing.T) {
 
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Convey("From raml with included JSON", func() {
+		Convey("From raml with included JSON", t, func(c C) {
 			var apiDef raml.APIDefinition
 			err := raml.ParseFile("../fixtures/struct/json/api.raml", &apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			err = generateAllObjects(&apiDef, targetDir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/object/json"
 			checks := []struct {
@@ -143,17 +143,17 @@ func TestGenerateObjectMethodBody(t *testing.T) {
 
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})

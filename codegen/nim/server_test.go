@@ -6,20 +6,20 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Jumpscale/go-raml/raml"
-	"github.com/Jumpscale/go-raml/utils"
+	"github.com/feeltheajf/go-raml/raml"
+	"github.com/feeltheajf/go-raml/utils"
 
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestGenerateServer(t *testing.T) {
-	Convey("generate server from raml", t, func() {
+	Convey("generate server from raml", t, func(c C) {
 		var apiDef raml.APIDefinition
 		err := raml.ParseFile("../fixtures/server_resources/deliveries.raml", &apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		ns := Server{
 			Title:      apiDef.Title,
@@ -28,7 +28,7 @@ func TestGenerateServer(t *testing.T) {
 			Dir:        targetDir,
 		}
 		err = ns.Generate()
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "./fixtures/server/delivery"
 		checks := []struct {
@@ -41,15 +41,15 @@ func TestGenerateServer(t *testing.T) {
 
 		for _, check := range checks {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})

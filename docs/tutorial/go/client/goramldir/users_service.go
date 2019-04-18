@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Jumpscale/go-raml/docs/tutorial/go/client/goramldir/goraml"
-	"github.com/Jumpscale/go-raml/docs/tutorial/go/client/goramldir/types"
+	"github.com/feeltheajf/go-raml/docs/tutorial/go/client/goramldir/goraml"
+	"github.com/feeltheajf/go-raml/docs/tutorial/go/client/goramldir/types"
 )
 
 type UsersService service

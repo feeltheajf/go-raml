@@ -3,8 +3,9 @@
 """
 Auto-generated class for PlainObject
 """
-import capnp
 import os
+
+import capnp
 
 from . import client_support
 
@@ -17,6 +18,10 @@ class PlainObject(object):
     """
 
     @staticmethod
+    def _get_schema():
+        return {"obj": {"type": dict, "required": True}}
+
+    @staticmethod
     def create(**kwargs):
         """
         :type obj: dict
@@ -27,14 +32,16 @@ class PlainObject(object):
 
     def __init__(self, json=None, **kwargs):
         if json is None and not kwargs:
-            raise ValueError('No data or kwargs present')
+            raise ValueError("No data or kwargs present")
 
-        class_name = 'PlainObject'
+        class_name = "PlainObject"
         data = json or kwargs
 
         # set attributes
         data_types = [dict]
-        self.obj = client_support.set_property('obj', data, data_types, False, [], False, True, class_name)
+        self.obj = client_support.set_property(
+            "obj", data, data_types, False, [], False, True, class_name
+        )
 
     def __str__(self):
         return self.as_json(indent=4)
@@ -50,7 +57,7 @@ class PlainObject(object):
         Load the class in capnp schema PlainObject.capnp
         :rtype bytes
         """
-        template = capnp.load('%s/PlainObject.capnp' % dir)
+        template = capnp.load("%s/PlainObject.capnp" % dir)
         return template.PlainObject.new_message(**self.as_dict()).to_bytes()
 
 
@@ -66,6 +73,10 @@ class PlainObjectCollection:
         :type binary: bytes. If none creates an empty capnp object.
         rtype: PlainObject
         """
-        template = capnp.load('%s/PlainObject.capnp' % dir)
-        struct = template.PlainObject.from_bytes(binary) if binary else template.PlainObject.new_message()
+        template = capnp.load("%s/PlainObject.capnp" % dir)
+        struct = (
+            template.PlainObject.from_bytes(binary)
+            if binary
+            else template.PlainObject.new_message()
+        )
         return PlainObject(**struct.to_dict(verbose=True))

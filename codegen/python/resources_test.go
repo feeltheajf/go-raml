@@ -6,37 +6,37 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Jumpscale/go-raml/raml"
-	"github.com/Jumpscale/go-raml/utils"
+	"github.com/feeltheajf/go-raml/raml"
+	"github.com/feeltheajf/go-raml/utils"
 
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestPythonResource(t *testing.T) {
-	Convey("resource generator", t, func() {
+	Convey("resource generator", t, func(c C) {
 		targetdir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("resource with request body", func() {
+		Convey("resource with request body", t, func(c C) {
 			apiDef := new(raml.APIDefinition)
 			err := raml.ParseFile("../fixtures/server_resources/deliveries.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			fs := NewFlaskServer(apiDef, "apidocs", targetdir, true, nil, false)
 
 			err = fs.generateResources(targetdir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			// check  api implementation
 			s, err := utils.TestLoadFile(filepath.Join(targetdir, "deliveries_api.py"))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile("../fixtures/server_resources/deliveries_api.py")
-			So(err, ShouldBeNil)
-			So(s, ShouldEqual, tmpl)
+			c.So(err, ShouldBeNil)
+			c.So(s, ShouldEqual, tmpl)
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetdir)
 		})
 	})

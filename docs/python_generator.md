@@ -2,7 +2,8 @@
 
 ## Requirements
 
-- [autopep8](https://pypi.python.org/pypi/autopep8) for automatic code formatting
+- [isort](https://pypi.python.org/pypi/isort) for automatic code formatting
+- [black](https://pypi.python.org/pypi/black) for automatic code formatting
 
 ## Server
 
@@ -14,7 +15,7 @@ Generated server code use these libraries:
 
 ## Client
 
-Generated client library use [requests](http://docs.python-requests.org/en/master/) or 
+Generated client library use [requests](http://docs.python-requests.org/en/master/) or
 [aiohttp](http://aiohttp.readthedocs.io/en/stable/) as http library.
 
 
@@ -125,4 +126,3 @@ Libraries should work properly except the apidocs web page (REST UI).
 
 
 ### Overlays and Extensions
-

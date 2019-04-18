@@ -7,23 +7,24 @@ import (
 	"testing"
 
 	"fmt"
-	"github.com/Jumpscale/go-raml/raml"
-	"github.com/Jumpscale/go-raml/utils"
+
+	"github.com/feeltheajf/go-raml/raml"
+	"github.com/feeltheajf/go-raml/utils"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestGeneratePythonCapnpClasses(t *testing.T) {
-	Convey("generate python class from raml", t, func() {
+	Convey("generate python class from raml", t, func(c C) {
 		apiDef := new(raml.APIDefinition)
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("python class from raml Types", func() {
+		Convey("python class from raml Types", t, func(c C) {
 			err := raml.ParseFile("./fixtures/python_capnp/types.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			err = GeneratePythonCapnpClasses(apiDef, targetDir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/python_capnp/"
 			files := []string{
@@ -44,22 +45,22 @@ func TestGeneratePythonCapnpClasses(t *testing.T) {
 				// check the python classes
 				class := fmt.Sprintf(f, "py")
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, class))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, class))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 
 				// check the capnp schemas
 				schema := fmt.Sprintf(f, "capnp")
 				s, err = utils.TestLoadFileRemoveID(filepath.Join(targetDir, schema))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err = utils.TestLoadFileRemoveID(filepath.Join(rootFixture, schema))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 			// make sure these files are not exists
@@ -69,12 +70,12 @@ func TestGeneratePythonCapnpClasses(t *testing.T) {
 			}
 			for _, f := range filesNotExist {
 				_, err := os.Stat(filepath.Join(targetDir, f))
-				So(err, ShouldNotBeNil)
+				c.So(err, ShouldNotBeNil)
 			}
 
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 

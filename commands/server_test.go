@@ -7,15 +7,15 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Jumpscale/go-raml/utils"
+	"github.com/feeltheajf/go-raml/utils"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestServerGeneration(t *testing.T) {
-	Convey("test command server generation", t, func() {
+	Convey("test command server generation", t, func(c C) {
 		targetdir, err := ioutil.TempDir("", "test_server_command")
-		So(err, ShouldBeNil)
-		Convey("Test run server command using go language", func() {
+		c.So(err, ShouldBeNil)
+		Convey("Test run server command using go language", t, func(c C) {
 
 			cmd := ServerCommand{
 				Language:    "go",
@@ -25,34 +25,34 @@ func TestServerGeneration(t *testing.T) {
 				PackageName: "main",
 			}
 			err := cmd.Execute()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			// check users api implementation
 			s, err := utils.TestLoadFile(filepath.Join(targetdir, "handlers", "users", "users_api.go"))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile("../codegen/fixtures/server/user_api/users_api.txt")
-			So(err, ShouldBeNil)
-			So(s, ShouldEqual, tmpl)
+			c.So(err, ShouldBeNil)
+			c.So(s, ShouldEqual, tmpl)
 
 			// check user interface
 			s, err = utils.TestLoadFile(filepath.Join(targetdir, "users_if.go"))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err = utils.TestLoadFile("../codegen/fixtures/server/user_api/users_if.txt")
-			So(err, ShouldBeNil)
-			So(s, ShouldEqual, tmpl)
+			c.So(err, ShouldBeNil)
+			c.So(s, ShouldEqual, tmpl)
 
 			// check main file
 			s, err = utils.TestLoadFile(filepath.Join(targetdir, "main.go"))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err = utils.TestLoadFile("../codegen/fixtures/server/user_api/main.txt")
-			So(err, ShouldBeNil)
-			So(s, ShouldEqual, tmpl)
+			c.So(err, ShouldBeNil)
+			c.So(s, ShouldEqual, tmpl)
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			//cleanup
 			os.RemoveAll(targetdir)
 		})
@@ -60,10 +60,10 @@ func TestServerGeneration(t *testing.T) {
 }
 
 func TestServerNoMainGeneration(t *testing.T) {
-	Convey("test command server generation without a main", t, func() {
+	Convey("test command server generation without a main", t, func(c C) {
 		targetdir, err := ioutil.TempDir("", "test_server_command")
-		So(err, ShouldBeNil)
-		Convey("Test run server command without a main", func() {
+		c.So(err, ShouldBeNil)
+		Convey("Test run server command without a main", t, func(c C) {
 
 			cmd := ServerCommand{
 				Dir:              targetdir,
@@ -74,15 +74,15 @@ func TestServerNoMainGeneration(t *testing.T) {
 				NoMainGeneration: true,
 			}
 			err := cmd.Execute()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			// check main fil
 			if _, err := os.Stat(filepath.Join(targetdir, "main.go")); err == nil {
-				So(errors.New("main.go file exists"), ShouldBeNil)
+				c.So(errors.New("main.go file exists"), ShouldBeNil)
 			}
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			//cleanup
 			os.RemoveAll(targetdir)
 		})

@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Jumpscale/go-raml/raml"
-	"github.com/Jumpscale/go-raml/utils"
+	"github.com/feeltheajf/go-raml/raml"
+	"github.com/feeltheajf/go-raml/utils"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -19,19 +19,19 @@ var (
 )
 
 func TestLibrary(t *testing.T) {
-	Convey("Library usage in server", t, func() {
+	Convey("Library usage in server", t, func(c C) {
 		var apiDef raml.APIDefinition
 
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		err = raml.ParseFile("../fixtures/libraries/api.raml", &apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		server := NewServer(&apiDef, "main", "apidocs", "examples.com/ramlcode", true,
 			targetDir, testLibRootURLs)
 		err = server.Generate()
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "../fixtures/libraries/go_server"
 		checks := []struct {
@@ -48,32 +48,32 @@ func TestLibrary(t *testing.T) {
 
 		for _, check := range checks {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
 
-	Convey("Library usage in client", t, func() {
+	Convey("Library usage in client", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		apiDef := new(raml.APIDefinition)
 		err = raml.ParseFile("../fixtures/libraries/api.raml", apiDef)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		client, err := NewClient(apiDef, "theclient", "examples.com/theclient", targetDir, testLibRootURLs)
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		err = client.Generate()
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
 		rootFixture := "../fixtures/libraries/go_client"
 		checks := []struct {
@@ -89,33 +89,33 @@ func TestLibrary(t *testing.T) {
 
 		for _, check := range checks {
 			s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
-			So(s, ShouldEqual, tmpl)
+			c.So(s, ShouldEqual, tmpl)
 		}
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
 
-	Convey("raml-examples", t, func() {
+	Convey("raml-examples", t, func(c C) {
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("server", func() {
+		Convey("server", t, func(c C) {
 
 			var apiDef raml.APIDefinition
 
 			err = raml.ParseFile("../fixtures/raml-examples/libraries/api.raml", &apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			server := NewServer(&apiDef, "main", "apidocs", "examples.com/libro", true, targetDir, nil)
 			err = server.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "../fixtures/libraries/raml-examples/go_server"
 			checks := []struct {
@@ -128,26 +128,26 @@ func TestLibrary(t *testing.T) {
 
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 		})
 
-		Convey("client", func() {
+		Convey("client", t, func(c C) {
 			var apiDef raml.APIDefinition
 
 			err = raml.ParseFile("../fixtures/raml-examples/libraries/api.raml", &apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			client, err := NewClient(&apiDef, "client", "examples.com/libro", targetDir, nil)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			err = client.Generate()
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "../fixtures/libraries/raml-examples/go_client"
 			checks := []struct {
@@ -160,16 +160,16 @@ func TestLibrary(t *testing.T) {
 
 			for _, check := range checks {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, check.Result))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, check.Expected))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
@@ -177,7 +177,7 @@ func TestLibrary(t *testing.T) {
 }
 
 func TestAliasLibTypeImportPath(t *testing.T) {
-	Convey("TestAliasLibTypeImportPath", t, func() {
+	Convey("TestAliasLibTypeImportPath", t, func(c C) {
 		tests := []struct {
 			path    string
 			aliased string
@@ -188,7 +188,7 @@ func TestAliasLibTypeImportPath(t *testing.T) {
 
 		for _, test := range tests {
 			aliased := aliasLibTypeImportPath(test.path)
-			So(aliased, ShouldEqual, test.aliased)
+			c.So(aliased, ShouldEqual, test.aliased)
 		}
 	})
 }

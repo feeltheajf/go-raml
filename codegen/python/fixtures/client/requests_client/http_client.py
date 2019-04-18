@@ -38,7 +38,7 @@ class HTTPClient:
         return headers
 
     def _handle_data(self, uri, data, headers, params, content_type, method):
-        uri = uri.encode('utf-8')
+        uri = uri.encode("utf-8")
 
         headers = self._get_headers(headers, content_type)
         if self.is_goraml_class(data):
@@ -47,7 +47,7 @@ class HTTPClient:
         if content_type == "multipart/form-data":
             # when content type is multipart/formdata remove the content-type header
             # as requests will set this itself with correct boundary
-            headers.pop('Content-Type')
+            headers.pop("Content-Type")
             res = method(uri, files=data, headers=headers, params=params)
         elif data is None:
             res = method(uri, headers=headers, params=params)
@@ -59,16 +59,26 @@ class HTTPClient:
         return res
 
     def post(self, uri, data, headers, params, content_type):
-        return self._handle_data(uri, data, headers, params, content_type, self.session.post)
+        return self._handle_data(
+            uri, data, headers, params, content_type, self.session.post
+        )
 
     def put(self, uri, data, headers, params, content_type):
-        return self._handle_data(uri, data, headers, params, content_type, self.session.put)
+        return self._handle_data(
+            uri, data, headers, params, content_type, self.session.put
+        )
 
     def patch(self, uri, data, headers, params, content_type):
-        return self._handle_data(uri, data, headers, params, content_type, self.session.patch)
+        return self._handle_data(
+            uri, data, headers, params, content_type, self.session.patch
+        )
 
     def get(self, uri, data, headers, params, content_type):
-        return self._handle_data(uri, data, headers, params, content_type, self.session.get)
+        return self._handle_data(
+            uri, data, headers, params, content_type, self.session.get
+        )
 
     def delete(self, uri, data, headers, params, content_type):
-        return self._handle_data(uri, data, headers, params, content_type, self.session.delete)
+        return self._handle_data(
+            uri, data, headers, params, content_type, self.session.delete
+        )

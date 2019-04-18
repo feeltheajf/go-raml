@@ -6,24 +6,24 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Jumpscale/go-raml/raml"
-	"github.com/Jumpscale/go-raml/utils"
+	"github.com/feeltheajf/go-raml/raml"
+	"github.com/feeltheajf/go-raml/utils"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestStruct(t *testing.T) {
-	Convey("generate struct from raml", t, func() {
+	Convey("generate struct from raml", t, func(c C) {
 		apiDef := new(raml.APIDefinition)
 
 		targetDir, err := ioutil.TempDir("", "")
-		So(err, ShouldBeNil)
+		c.So(err, ShouldBeNil)
 
-		Convey("Struct from raml", func() {
+		Convey("Struct from raml", t, func(c C) {
 			err := raml.ParseFile("../fixtures/struct/struct.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			err = generateStructs(apiDef.Types, targetDir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/struct"
 			files := []string{
@@ -51,25 +51,25 @@ func TestStruct(t *testing.T) {
 
 			for _, f := range files {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, typeDir, f+".go"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f+".txt"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Convey("With included & inline JSON ", func() {
+		Convey("With included & inline JSON ", t, func(c C) {
 			err := raml.ParseFile("../fixtures/struct/json/api.raml", apiDef)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			err = generateStructs(apiDef.Types, targetDir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			err = generateAllStructs(apiDef, targetDir)
-			So(err, ShouldBeNil)
+			c.So(err, ShouldBeNil)
 
 			rootFixture := "./fixtures/struct/json"
 			files := []string{
@@ -81,17 +81,17 @@ func TestStruct(t *testing.T) {
 
 			for _, f := range files {
 				s, err := utils.TestLoadFile(filepath.Join(targetDir, typeDir, f+".go"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
 				tmpl, err := utils.TestLoadFile(filepath.Join(rootFixture, f+".txt"))
-				So(err, ShouldBeNil)
+				c.So(err, ShouldBeNil)
 
-				So(s, ShouldEqual, tmpl)
+				c.So(s, ShouldEqual, tmpl)
 			}
 
 		})
 
-		Reset(func() {
+		c.Reset(func() {
 			os.RemoveAll(targetDir)
 		})
 	})
