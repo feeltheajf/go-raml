@@ -9,9 +9,10 @@ from .users_service import UsersService
 
 class Client:
 
+    _base_uri = "http://api.jumpscale.com/v3"
     _services = ("users",)
 
-    def __init__(self, loop, base_uri="http://api.jumpscale.com/v3"):
+    def __init__(self, loop, base_uri=_base_uri):
         http_client = HTTPClient(loop, base_uri)
 
         self.users = UsersService(http_client)

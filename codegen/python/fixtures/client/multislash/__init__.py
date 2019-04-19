@@ -7,9 +7,10 @@ from .http_client import HTTPClient
 
 class Client:
 
+    _base_uri = "http://localhost:5000"
     _services = ("animalsid",)
 
-    def __init__(self, base_uri="http://localhost:5000"):
+    def __init__(self, base_uri=_base_uri):
         http_client = HTTPClient(base_uri)
         self.animalsid = AnimalsidService(http_client)
         self.close = http_client.close

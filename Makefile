@@ -18,7 +18,7 @@ build: generate
 generate:
 	go generate
 
-test:
+test: generate
 	go test -v -coverprofile=coverage.xml -covermode=atomic $(PACKAGES)
 
 gogentest:

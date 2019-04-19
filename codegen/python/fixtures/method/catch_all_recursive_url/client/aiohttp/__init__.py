@@ -7,9 +7,10 @@ from .tree_service import TreeService
 
 class Client:
 
+    _base_uri = "http://localhost:5000"
     _services = ("tree",)
 
-    def __init__(self, loop, base_uri="http://localhost:5000"):
+    def __init__(self, loop, base_uri=_base_uri):
         http_client = HTTPClient(loop, base_uri)
 
         self.tree = TreeService(http_client)

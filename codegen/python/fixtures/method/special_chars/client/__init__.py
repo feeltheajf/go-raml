@@ -8,9 +8,10 @@ from .User2_0 import User2_0
 
 class Client:
 
+    _base_uri = "http://localhost:5000"
     _services = ("escape_type", "uri")
 
-    def __init__(self, base_uri="http://localhost:5000"):
+    def __init__(self, base_uri=_base_uri):
         http_client = HTTPClient(base_uri)
         self.escape_type = Escape_typeService(http_client)
         self.uri = UriService(http_client)
