@@ -5,8 +5,13 @@ from .unmarshall_error import UnmarshallError
 
 
 class AnimalsService:
+    """
+    auto-generated. don't touch.
+    """
 
-    _methods = ("animals_get",)
+    @staticmethod
+    def _get_methods():
+        return (("animals_get", ""),)
 
     def __init__(self, client):
         self.client = client

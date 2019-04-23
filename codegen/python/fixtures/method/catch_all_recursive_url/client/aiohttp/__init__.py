@@ -4,13 +4,19 @@ from .File import File
 from .http_client import HTTPClient
 from .tree_service import TreeService
 
+BASE_URI = "http://localhost:5000"
+
 
 class Client:
+    """
+    auto-generated. don't touch.
+    """
 
-    _base_uri = "http://localhost:5000"
-    _services = ("tree",)
+    @staticmethod
+    def _get_services():
+        return ("tree",)
 
-    def __init__(self, loop, base_uri=_base_uri):
+    def __init__(self, loop, base_uri=BASE_URI):
         http_client = HTTPClient(loop, base_uri)
 
         self.tree = TreeService(http_client)

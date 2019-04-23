@@ -6,13 +6,19 @@ from .GetUsersReqBody import GetUsersReqBody
 from .http_client import HTTPClient
 from .users_service import UsersService
 
+BASE_URI = "http://api.jumpscale.com/v3"
+
 
 class Client:
+    """
+    auto-generated. don't touch.
+    """
 
-    _base_uri = "http://api.jumpscale.com/v3"
-    _services = ("users",)
+    @staticmethod
+    def _get_services():
+        return ("users",)
 
-    def __init__(self, loop, base_uri=_base_uri):
+    def __init__(self, loop, base_uri=BASE_URI):
         http_client = HTTPClient(loop, base_uri)
 
         self.users = UsersService(http_client)

@@ -19,7 +19,7 @@ generate:
 	go generate
 
 test: generate
-	go test -v -coverprofile=coverage.xml -covermode=atomic $(PACKAGES)
+	$(foreach PKG,$(PACKAGES),go test -v -coverprofile=coverage.xml -covermode=atomic $(PKG);)
 
 gogentest:
 	cd codegen/golang/gentest; bash test.sh

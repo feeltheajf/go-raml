@@ -5,16 +5,16 @@ from .unmarshall_error import UnmarshallError
 
 
 class ArraysService:
+    """
+    auto-generated. don't touch.
+    """
 
-    _methods = ("arrays_post", "arrays_put")
+    @staticmethod
+    def _get_methods():
+        return (("arrays_post", "Animal"), ("arrays_put", "Animal"))
 
     def __init__(self, client):
         self.client = client
-
-    @property
-    def _arrays_post_data_types(self):
-        """It is data schema for POST /arrays"""
-        return (Animal,)
 
     def arrays_post(
         self,
@@ -49,11 +49,6 @@ class ArraysService:
             raise uae
         except Exception as e:
             raise UnmarshallError(resp, e.message)
-
-    @property
-    def _arrays_put_data_types(self):
-        """It is data schema for PUT /arrays"""
-        return (Animal,)
 
     def arrays_put(
         self,

@@ -183,7 +183,6 @@ func runGoFmt(filePath string) error {
 }
 
 func runBlack(filename string) error {
-	// run iSort to remove duplicate imports
 	args := []string{
 		filename,
 	}
@@ -192,7 +191,6 @@ func runBlack(filename string) error {
 			filename, string(out))
 		return errors.New("isort failed: make sure you have it installed")
 	}
-	// run Black
 	args = []string{
 		"-l",
 		"79",

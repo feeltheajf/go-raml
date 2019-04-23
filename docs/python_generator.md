@@ -2,8 +2,8 @@
 
 ## Requirements
 
-- [isort](https://pypi.python.org/pypi/isort) for automatic code formatting
 - [black](https://pypi.python.org/pypi/black) for automatic code formatting
+- [isort](https://pypi.python.org/pypi/isort) for automatic imports sorting
 
 ## Server
 

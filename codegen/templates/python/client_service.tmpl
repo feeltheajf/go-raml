@@ -5,30 +5,23 @@
 {{ $v }}
 {{- end}}
 
-{{ range $k, $v := .Methods }}
-{{- if $v.HasData }}{{ range $, $t := $v.BasicTypes }}from .{{$t}} import {{$t}}
-{{end -}}{{end}}{{ end -}}
-
 {{ $UnmarshallResponse := .UnmarshallResponse}}
 
 class {{.Name}}:
+    """
+    auto-generated. don't touch.
+    """
 
-    _methods = (
-        {{ range $k, $v := .Methods }}"{{$v.MethodName}}",{{end}}
-    )
+    @staticmethod
+    def _get_methods():
+        return (
+            {{ range $k, $v := .Methods }}("{{$v.MethodName}}", "{{$v.ReqBodyType}}"),{{end}}
+        )
 
     def __init__(self, client):
         self.client = client
 
 {{ range $k, $v := .Methods }}
-
-    {{- if $v.HasData }}
-    @property
-    def _{{$v.MethodName}}_data_types(self):
-        """It is data schema for {{$v.Verb}} {{$v.Endpoint}}"""
-        return ({{$v.BasicTypesString}})
-    {{- end}}
-
     def {{$v.MethodName}}({{$v.Params}}):
         """{{ range $kf, $vf := $v.FuncComments }}
         {{$vf}}{{end}}

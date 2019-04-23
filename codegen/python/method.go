@@ -31,8 +31,7 @@ func (m method) ReqBody() string {
 }
 
 // TODO: Think of a better way to do it
-func (m method) BasicTypes() []string {
-	var types []string
+func (m method) ReqBodyType() string {
 	var bodyType interface{}
 	var supportedBodyTypes []interface{}
 
@@ -56,23 +55,12 @@ func (m method) BasicTypes() []string {
 			continue
 		}
 		if t != "object" {
-			for _, v := range strings.Split(t, " | ") {
-				types = append(types, v)
-			}
+			return strings.Split(t, " | ")[0]
 		} else {
-			types = append(types, casee.ToPascalCase(m.reqBody))
+			return casee.ToPascalCase(m.reqBody)
 		}
 	}
-	return types
-}
-
-func (m method) BasicTypesString() string {
-	bt := m.BasicTypes()
-	bts := strings.Join(bt, ", ")
-	if len(bt) > 0 {
-		bts += ","
-	}
-	return bts
+	return ""
 }
 
 func (m method) escapedEndpoint() string {

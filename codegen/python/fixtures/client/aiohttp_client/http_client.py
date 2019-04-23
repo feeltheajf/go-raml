@@ -46,7 +46,6 @@ class HTTPClient:
         else:
             res = await method(uri, data=data, headers=hdrs, params=params)
 
-        res.raise_for_status()
         return res
 
     async def get(self, uri, data, headers, params, content_type):

@@ -5,8 +5,13 @@ from .unmarshall_error import UnmarshallError
 
 
 class TreeService:
+    """
+    auto-generated. don't touch.
+    """
 
-    _methods = ("get",)
+    @staticmethod
+    def _get_methods():
+        return (("get", ""),)
 
     def __init__(self, client):
         self.client = client

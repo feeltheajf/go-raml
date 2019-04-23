@@ -2,8 +2,13 @@
 
 
 class AnimalsidService:
+    """
+    auto-generated. don't touch.
+    """
 
-    _methods = ("animalsid_get",)
+    @staticmethod
+    def _get_methods():
+        return (("animalsid_get", ""),)
 
     def __init__(self, client):
         self.client = client

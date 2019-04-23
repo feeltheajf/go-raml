@@ -198,6 +198,9 @@ func (pf *field) addImport(apiDef *raml.APIDefinition, module, name string) {
 
 // convert from raml Type to python type
 func (pf *field) setType(apiDef *raml.APIDefinition, t, items string) {
+	// TODO:
+	t = strings.Split(t, " | ")[0]
+
 	pt := toPythonType(t)
 	if pt != nil {
 		pf.Type = pt.name

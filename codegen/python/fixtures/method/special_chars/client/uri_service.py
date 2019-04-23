@@ -5,8 +5,13 @@ from .User2_0 import User2_0
 
 
 class UriService:
+    """
+    auto-generated. don't touch.
+    """
 
-    _methods = ("uri_users_id_get",)
+    @staticmethod
+    def _get_methods():
+        return (("uri_users_id_get", ""),)
 
     def __init__(self, client):
         self.client = client

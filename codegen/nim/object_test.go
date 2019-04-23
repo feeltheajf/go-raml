@@ -18,7 +18,7 @@ func TestGenerateObjectFromRaml(t *testing.T) {
 		targetDir, err := ioutil.TempDir("", "")
 		c.So(err, ShouldBeNil)
 
-		Convey("From raml", t, func(c C) {
+		Convey("From RAML", t, func(c C) {
 			err = raml.ParseFile("../fixtures/struct/struct.raml", &apiDef)
 			c.So(err, ShouldBeNil)
 
@@ -57,7 +57,7 @@ func TestGenerateObjectFromRaml(t *testing.T) {
 
 		})
 
-		Convey("From raml with JSON", t, func(c C) {
+		Convey("From RAML with JSON", t, func(c C) {
 			err = raml.ParseFile("../fixtures/struct/json/api.raml", &apiDef)
 			c.So(err, ShouldBeNil)
 
@@ -94,7 +94,7 @@ func TestGenerateObjectMethodBody(t *testing.T) {
 		targetDir, err := ioutil.TempDir("", "")
 		c.So(err, ShouldBeNil)
 
-		Convey("From raml", t, func(c C) {
+		Convey("From RAML", t, func(c C) {
 			var apiDef raml.APIDefinition
 			err := raml.ParseFile("../fixtures/struct/struct.raml", &apiDef)
 			c.So(err, ShouldBeNil)
@@ -123,7 +123,7 @@ func TestGenerateObjectMethodBody(t *testing.T) {
 
 		})
 
-		Convey("From raml with included JSON", t, func(c C) {
+		Convey("From RAML with included JSON", t, func(c C) {
 			var apiDef raml.APIDefinition
 			err := raml.ParseFile("../fixtures/struct/json/api.raml", &apiDef)
 			c.So(err, ShouldBeNil)

@@ -4,13 +4,19 @@ from .Animal import Animal
 from .animalsid_service import AnimalsidService
 from .http_client import HTTPClient
 
+BASE_URI = "http://localhost:5000"
+
 
 class Client:
+    """
+    auto-generated. don't touch.
+    """
 
-    _base_uri = "http://localhost:5000"
-    _services = ("animalsid",)
+    @staticmethod
+    def _get_services():
+        return ("animalsid",)
 
-    def __init__(self, base_uri=_base_uri):
+    def __init__(self, base_uri=BASE_URI):
         http_client = HTTPClient(base_uri)
         self.animalsid = AnimalsidService(http_client)
         self.close = http_client.close

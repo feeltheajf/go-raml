@@ -5,16 +5,16 @@ from .User2_0 import User2_0
 
 
 class Escape_typeService:
+    """
+    auto-generated. don't touch.
+    """
 
-    _methods = ("escape_type_post",)
+    @staticmethod
+    def _get_methods():
+        return (("escape_type_post", "User2_0"),)
 
     def __init__(self, client):
         self.client = client
-
-    @property
-    def _escape_type_post_data_types(self):
-        """It is data schema for POST /escape_type"""
-        return (User2_0,)
 
     def escape_type_post(
         self,

@@ -5,13 +5,19 @@ from .http_client import HTTPClient
 from .uri_service import UriService
 from .User2_0 import User2_0
 
+BASE_URI = "http://localhost:5000"
+
 
 class Client:
+    """
+    auto-generated. don't touch.
+    """
 
-    _base_uri = "http://localhost:5000"
-    _services = ("escape_type", "uri")
+    @staticmethod
+    def _get_services():
+        return ("escape_type", "uri")
 
-    def __init__(self, base_uri=_base_uri):
+    def __init__(self, base_uri=BASE_URI):
         http_client = HTTPClient(base_uri)
         self.escape_type = Escape_typeService(http_client)
         self.uri = UriService(http_client)

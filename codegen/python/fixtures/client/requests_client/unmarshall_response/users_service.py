@@ -6,17 +6,22 @@ from .unmarshall_error import UnmarshallError
 
 
 class UsersService:
+    """
+    auto-generated. don't touch.
+    """
 
-    _methods = (
-        "users_userId_address_addressId_get",
-        "users_userId_delete",
-        "getuserid",
-        "users_userId_post",
-        "users_delete",
-        "get_users",
-        "option_users",
-        "create_users",
-    )
+    @staticmethod
+    def _get_methods():
+        return (
+            ("users_userId_address_addressId_get", ""),
+            ("users_userId_delete", ""),
+            ("getuserid", ""),
+            ("users_userId_post", ""),
+            ("users_delete", "City"),
+            ("get_users", ""),
+            ("option_users", ""),
+            ("create_users", "City"),
+        )
 
     def __init__(self, client):
         self.client = client
@@ -105,11 +110,6 @@ class UsersService:
         except Exception as e:
             raise UnmarshallError(resp, e.message)
 
-    @property
-    def _users_userId_post_data_types(self):
-        """It is data schema for POST /users/{userId}"""
-        return ()
-
     def users_userId_post(
         self,
         data,
@@ -127,11 +127,6 @@ class UsersService:
 
         uri = self.client.base_url + "/users/" + userId
         return self.client.post(uri, data, headers, query_params, content_type)
-
-    @property
-    def _users_delete_data_types(self):
-        """It is data schema for DELETE /users"""
-        return (City,)
 
     def users_delete(
         self,
@@ -166,11 +161,6 @@ class UsersService:
         except Exception as e:
             raise UnmarshallError(resp, e.message)
 
-    @property
-    def _get_users_data_types(self):
-        """It is data schema for GET /users"""
-        return ()
-
     def get_users(
         self,
         data,
@@ -202,11 +192,6 @@ class UsersService:
         return self.client.session.options(
             uri, None, headers, query_params, content_type
         )
-
-    @property
-    def _create_users_data_types(self):
-        """It is data schema for POST /users"""
-        return (City,)
 
     def create_users(
         self,

@@ -14,14 +14,21 @@ from .{{$v.FilenameNoExt}} import {{$v.Name}}{{end}}
 from .{{$v.ModuleName}} import {{$v.ClassName}}{{end}}
 from .http_client import HTTPClient
 
+BASE_URI = "{{.BaseURI}}"
+
+
 class Client:
+    """
+    auto-generated. don't touch.
+    """
 
-    _base_uri = "{{.BaseURI}}"
-    _services = (
-        {{ range $k, $v := .Services }}"{{$v.EndpointName}}",{{end}}
-    )
+    @staticmethod
+    def _get_services():
+        return (
+            {{ range $k, $v := .Services }}"{{$v.EndpointName}}",{{end}}
+        )
 
-    def __init__(self, base_uri=_base_uri):
+    def __init__(self, base_uri=BASE_URI):
         http_client = HTTPClient(base_uri)
         {{- if .Securities}}
         self.security_schemes = Security(http_client) {{ end }}
